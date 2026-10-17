@@ -12,6 +12,14 @@ import noteRoutes from "./routes/notes.js";
 
 const app = express();
 
+app.use(helmet());
+
+app.set("etag", false);
+app.use("/api", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
