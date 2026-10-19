@@ -5,6 +5,7 @@ import { z } from "zod";
 import rateLimit from "express-rate-limit";
 import Therapist from "../models/Therapist.js";
 import { requireAuth } from "../middleware/auth.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = Router();
 
@@ -107,5 +108,14 @@ router.get("/me", requireAuth, async (req, res) => {
   if (!therapist) return res.status(401).json({ message: "Not authenticated" });
   res.json(publicTherapist(therapist));
 });
+
+// Tells the login page whether to show the "Create account" link.
+router.get(
+  "/registration-status",
+  asyncHandler(async (req, res) => {
+    const count = await Therapist.countDocuments();
+    res.json({ open: count === 0 });
+  }),
+);
 
 export default router;

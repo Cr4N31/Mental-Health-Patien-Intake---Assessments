@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import { errorMessage } from "../api/client.js";
+import api, { errorMessage } from "../api/client.js";
 
 export default function Login() {
   const { user, loading, login } = useAuth();
@@ -10,6 +10,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [canRegister, setCanRegister] = useState(false);
+
+  useEffect(() => {
+    api
+      .get("/auth/registration-status")
+      .then((res) => setCanRegister(res.data.open))
+      .catch(() => {});
+  }, []);
 
   if (!loading && user) return <Navigate to="/" replace />;
 
@@ -85,6 +93,14 @@ export default function Login() {
             {busy ? "Logging in..." : "Log in"}
           </button>
         </form>
+        {canRegister && (
+          <p className="mt-6 text-sm text-muted">
+            No account yet?{" "}
+            <Link to="/register" className="text-brand underline">
+              Create the first account
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

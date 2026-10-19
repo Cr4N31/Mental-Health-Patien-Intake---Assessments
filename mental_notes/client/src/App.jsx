@@ -5,12 +5,14 @@ import Login from "./pages/Login.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ClientDetail from "./pages/ClientDetail.jsx";
 import PublicForm from "./pages/PublicForm.jsx";
+import Register from "./pages/RegisterPage.jsx";
 
 export default function App() {
   return (
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/form/:token" element={<PublicForm />} />
         <Route
           path="/"

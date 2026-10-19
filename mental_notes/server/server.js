@@ -11,6 +11,7 @@ import assessmentRoutes from "./routes/assessments.js";
 import noteRoutes from "./routes/notes.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(helmet());
 
