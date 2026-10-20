@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import api, { errorMessage } from "../api/client.js";
+import { errorMessage } from "../api/client.js";
 
 export default function Login() {
   const { user, loading, login } = useAuth();
@@ -10,14 +10,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [canRegister, setCanRegister] = useState(false);
-
-  useEffect(() => {
-    api
-      .get("/auth/registration-status")
-      .then((res) => setCanRegister(res.data.open))
-      .catch(() => {});
-  }, []);
 
   if (!loading && user) return <Navigate to="/" replace />;
 
@@ -38,10 +30,16 @@ export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center px-5">
       <div className="w-full max-w-sm">
+        <Link
+          to="/"
+          className="mb-8 inline-flex items-center gap-1 text-sm text-muted hover:text-brand-dark"
+        >
+          <span aria-hidden="true">&larr;</span> Back to home
+        </Link>
         <h1 className="font-serif text-4xl font-semibold text-brand-dark">
           Mental Notes
         </h1>
-        <p className="mt-2 text-muted">Log in to your practice.</p>
+        <p className="mt-2 text-muted">Log in to your account.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
@@ -93,14 +91,13 @@ export default function Login() {
             {busy ? "Logging in..." : "Log in"}
           </button>
         </form>
-        {canRegister && (
-          <p className="mt-6 text-sm text-muted">
-            No account yet?{" "}
-            <Link to="/register" className="text-brand underline">
-              Create the first account
-            </Link>
-          </p>
-        )}
+
+        <p className="mt-6 text-sm text-muted">
+          No account yet?{" "}
+          <Link to="/register" className="text-brand underline">
+            Create an account
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -1,227 +1,156 @@
-import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Layout from "../components/Layout.jsx";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 import api, { errorMessage } from "../api/client.js";
+import ProgressChart from "../components/ProgressChart.jsx";
+import {
+  FORM_TYPES,
+  FORM_INFO,
+  severityLabel,
+  changeText,
+  formatDate,
+  isHigh,
+} from "../lib/assessmentInfo.js";
 
-const RESPONSE_LABEL = {
-  1: "several days",
-  2: "more than half the days",
-  3: "nearly every day",
-};
-
-const fmt = (d) =>
-  new Date(d).toLocaleDateString(undefined, {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-
-const emptyForm = { firstName: "", lastName: "", email: "", phone: "" };
-
-export default function Dashboard() {
-  const [clients, setClients] = useState([]);
-  const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState(emptyForm);
-  const [formError, setFormError] = useState("");
-  const [saving, setSaving] = useState(false);
-
-  const load = useCallback(async () => {
-    try {
-      const [c, a] = await Promise.all([
-        api.get("/clients"),
-        api.get("/assessments/alerts"),
-      ]);
-      setClients(c.data);
-      setAlerts(a.data);
-      setError("");
-    } catch (err) {
-      setError(errorMessage(err));
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
-
-  async function markReviewed(id) {
-    try {
-      await api.patch(`/assessments/${id}/acknowledge`);
-      setAlerts((prev) => prev.filter((a) => a._id !== id));
-    } catch (err) {
-      setError(errorMessage(err));
-    }
-  }
-
-  async function addClient(e) {
-    e.preventDefault();
-    setFormError("");
-    setSaving(true);
-    try {
-      // Send only the fields that have a value.
-      const body = Object.fromEntries(
-        Object.entries(form).filter(([, v]) => v.trim() !== ""),
-      );
-      await api.post("/clients", body);
-      setForm(emptyForm);
-      setShowForm(false);
-      await load();
-    } catch (err) {
-      setFormError(errorMessage(err));
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  const setField = (name) => (e) =>
-    setForm((f) => ({ ...f, [name]: e.target.value }));
+function FormCard({ type, summary }) {
+  const info = FORM_INFO[type];
+  const latest = summary?.latest;
 
   return (
-    <Layout>
+    <div className="rounded-lg border border-line bg-paper p-6">
+      <p className="text-sm text-muted">{info.topic}</p>
+      <h2 className="font-serif text-2xl font-semibold text-brand-dark">
+        {info.name}
+      </h2>
+      <p className="mt-2 text-sm text-muted">{info.blurb}</p>
+
+      {latest ? (
+        <div className="mt-5">
+          <p className="text-3xl font-semibold">
+            {latest.totalScore}
+            <span className="text-base font-normal text-muted">
+              {" "}
+              / {info.max}
+            </span>
+          </p>
+          <p
+            className={`mt-1 inline-block rounded-md px-2 py-0.5 text-sm ${
+              isHigh(latest.severity) ? "bg-risk-soft text-risk" : "bg-line"
+            }`}
+          >
+            {severityLabel(latest.severity)}
+          </p>
+          <p className="mt-2 text-sm text-muted">
+            {formatDate(latest.completedAt)}. {changeText(summary.change)}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              to={`/assess/${type}`}
+              className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark"
+            >
+              Take again
+            </Link>
+            <Link
+              to={`/results/${latest._id}`}
+              state={{ change: summary.change }}
+              className="rounded-md border border-line px-4 py-2 text-sm font-medium hover:bg-paper"
+            >
+              View result
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-5">
+          <p className="text-sm text-muted">
+            You have not taken this yet. It takes about 2 minutes.
+          </p>
+          <Link
+            to={`/assess/${type}`}
+            className="mt-5 inline-block rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark"
+          >
+            Start
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function Dashboard() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [data, setData] = useState(null);
+  const [history, setHistory] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    api
+      .get("/assessments/latest")
+      .then((res) => setData(res.data))
+      .catch((err) => setError(errorMessage(err)));
+
+    api
+      .get("/assessments", { params: { limit: 100 } })
+      .then((res) => setHistory(res.data))
+      .catch(() => setHistory([]));
+  }, []);
+
+  async function handleLogout() {
+    await logout();
+    navigate("/login", { replace: true });
+  }
+
+  const firstName = user?.name?.split(" ")[0];
+
+  return (
+    <div className="mx-auto max-w-3xl px-5 py-8">
+      <header className="flex items-center justify-between">
+        <span className="font-serif text-xl font-semibold text-brand-dark">
+          Mental Notes
+        </span>
+        <div className="flex items-center gap-4 text-sm">
+          <Link to="/history" className="text-brand underline">
+            History
+          </Link>
+          <button onClick={handleLogout} className="text-muted underline">
+            Log out
+          </button>
+        </div>
+      </header>
+
+      <h1 className="mt-10 font-serif text-4xl font-semibold text-brand-dark">
+        Hello, {firstName}
+      </h1>
+      <p className="mt-2 text-muted">
+        Take a check-in whenever you like. Your results are private to you.
+      </p>
+
       {error && (
         <p
           role="alert"
-          className="mb-6 rounded-md bg-risk-soft px-3 py-2 text-sm text-risk"
+          className="mt-6 rounded-md bg-risk-soft px-3 py-2 text-sm text-risk"
         >
           {error}
         </p>
       )}
 
-      {alerts.length > 0 && (
-        <section
-          aria-labelledby="alerts-heading"
-          className="mb-10 rounded-md border-l-4 border-risk bg-risk-soft px-5 py-4"
-        >
-          <h2
-            id="alerts-heading"
-            className="font-serif text-xl font-semibold text-risk"
-          >
-            {alerts.length === 1
-              ? "1 response to question 9 needs your review"
-              : `${alerts.length} responses to question 9 need your review`}
-          </h2>
-          <ul className="mt-3 divide-y divide-risk/20">
-            {alerts.map((a) => (
-              <li
-                key={a._id}
-                className="flex flex-wrap items-center justify-between gap-3 py-3"
-              >
-                <div>
-                  <p className="font-medium">
-                    {a.client.firstName} {a.client.lastName}
-                  </p>
-                  <p className="text-sm text-muted">
-                    PHQ-9 on {fmt(a.completedAt)}: thoughts of self-harm
-                    reported {RESPONSE_LABEL[a.answers[8]]}.
-                    {a.client.phone ? ` Phone: ${a.client.phone}.` : ""}
-                  </p>
-                </div>
-                <div className="flex gap-2 text-sm">
-                  <Link
-                    to={`/clients/${a.client._id}`}
-                    className="rounded-md border border-risk px-3 py-1.5 font-medium text-risk hover:bg-white"
-                  >
-                    Open client
-                  </Link>
-                  <button
-                    onClick={() => markReviewed(a._id)}
-                    className="rounded-md bg-risk px-3 py-1.5 font-medium text-white hover:opacity-90"
-                  >
-                    Mark reviewed
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      {!data && !error && <p className="mt-8 text-muted">Loading...</p>}
 
-      <div className="flex items-end justify-between">
-        <h1 className="font-serif text-3xl font-semibold">Clients</h1>
-        <button
-          onClick={() => setShowForm((s) => !s)}
-          className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark"
-        >
-          {showForm ? "Cancel" : "Add client"}
-        </button>
-      </div>
-
-      {showForm && (
-        <form
-          onSubmit={addClient}
-          className="mt-5 grid gap-4 rounded-md border border-line bg-paper p-5 sm:grid-cols-2"
-        >
-          {[
-            ["firstName", "First name", "text", true],
-            ["lastName", "Last name", "text", true],
-            ["email", "Email", "email", false],
-            ["phone", "Phone", "tel", false],
-          ].map(([name, label, type, required]) => (
-            <div key={name}>
-              <label htmlFor={name} className="mb-1 block text-sm font-medium">
-                {label}
-                {required ? "" : " (optional)"}
-              </label>
-              <input
-                id={name}
-                type={type}
-                required={required}
-                value={form[name]}
-                onChange={setField(name)}
-                className="w-full rounded-md border border-line bg-white px-3 py-2"
-              />
-            </div>
+      {data && (
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          {FORM_TYPES.map((type) => (
+            <FormCard key={type} type={type} summary={data[type]} />
           ))}
-          {formError && (
-            <p role="alert" className="text-sm text-risk sm:col-span-2">
-              {formError}
-            </p>
-          )}
-          <div className="sm:col-span-2">
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-dark disabled:opacity-60"
-            >
-              {saving ? "Saving..." : "Save client"}
-            </button>
-          </div>
-        </form>
+        </div>
       )}
 
-      <div className="mt-6">
-        {loading ? (
-          <p className="text-muted">Loading clients...</p>
-        ) : clients.length === 0 ? (
-          <p className="rounded-md border border-dashed border-line px-5 py-8 text-muted">
-            No clients yet. Add your first client, then send them a PHQ-9 or
-            GAD-7 link.
-          </p>
-        ) : (
-          <ul className="divide-y divide-line rounded-md border border-line bg-paper">
-            {clients.map((c) => (
-              <li key={c._id}>
-                <Link
-                  to={`/clients/${c._id}`}
-                  className="flex items-center justify-between px-5 py-4 hover:bg-page"
-                >
-                  <span className="font-medium">
-                    {c.lastName}, {c.firstName}
-                  </span>
-                  <span className="text-sm text-muted">
-                    {c.email || "No email"}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </Layout>
+      {history && <ProgressChart items={history} />}
+
+      <p className="mt-10 text-sm text-muted">
+        These questionnaires are screening tools, not a diagnosis. If you are
+        worried about how you feel, please talk to a qualified health
+        professional.
+      </p>
+    </div>
   );
 }

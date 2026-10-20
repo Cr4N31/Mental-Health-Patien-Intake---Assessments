@@ -1,29 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import api, { errorMessage } from "../api/client.js";
+import { errorMessage } from "../api/client.js";
 
 export default function Register() {
   const { user, loading, register } = useAuth();
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState("checking"); // checking | open | closed | error
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
     confirm: "",
-    licenseNumber: "",
   });
+  const [consent, setConsent] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-
-  useEffect(() => {
-    api
-      .get("/auth/registration-status")
-      .then((res) => setStatus(res.data.open ? "open" : "closed"))
-      .catch(() => setStatus("error"));
-  }, []);
 
   if (!loading && user) return <Navigate to="/" replace />;
 
@@ -42,16 +34,19 @@ export default function Register() {
       setError("The two passwords do not match.");
       return;
     }
+    if (!consent) {
+      setError("Please accept the consent statement to continue.");
+      return;
+    }
 
     setBusy(true);
     try {
-      const body = {
+      await register({
         name: form.name,
         email: form.email,
         password: form.password,
-      };
-      if (form.licenseNumber.trim()) body.licenseNumber = form.licenseNumber;
-      await register(body);
+        consent: true,
+      });
       navigate("/", { replace: true });
     } catch (err) {
       setError(errorMessage(err));
@@ -60,64 +55,36 @@ export default function Register() {
     }
   }
 
-  if (status === "checking") {
-    return <p className="p-8 text-muted">Loading...</p>;
-  }
-
-  if (status === "error") {
-    return (
-      <div className="mx-auto max-w-sm px-5 py-16">
-        <p role="alert" className="text-risk">
-          Could not reach the server. Check that the API is running and try
-          again.
-        </p>
-      </div>
-    );
-  }
-
-  if (status === "closed") {
-    return (
-      <div className="mx-auto max-w-sm px-5 py-16">
-        <h1 className="font-serif text-3xl font-semibold text-brand-dark">
-          Registration is closed
-        </h1>
-        <p className="mt-3 text-muted">
-          An account already exists for this practice.
-        </p>
-        <Link to="/login" className="mt-6 inline-block text-brand underline">
-          Go to log in
-        </Link>
-      </div>
-    );
-  }
-
   const fields = [
-    ["name", "Full name", "text", "name", true],
-    ["email", "Email", "email", "email", true],
+    ["name", "Full name", "text", "name"],
+    ["email", "Email", "email", "email"],
     [
       "password",
       "Password (at least 10 characters)",
       "password",
       "new-password",
-      true,
     ],
-    ["confirm", "Confirm password", "password", "new-password", true],
-    ["licenseNumber", "License number (optional)", "text", "off", false],
+    ["confirm", "Confirm password", "password", "new-password"],
   ];
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-5 py-10">
+    <div className="flex flex-col min-h-screen items-center justify-center px-5 py-10">
+      <Link
+        to="/"
+        className="mb-8 inline-flex items-center gap-1 text-sm text-muted hover:text-brand-dark"
+      >
+        <span aria-hidden="true">&larr;</span> Back to home
+      </Link>
       <div className="w-full max-w-sm">
         <h1 className="font-serif text-4xl font-semibold text-brand-dark">
           Create your account
         </h1>
         <p className="mt-2 text-muted">
-          This sets up the single account for your practice. Registration closes
-          afterwards.
+          Take private check-ins and track how you are doing over time.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-          {fields.map(([name, label, type, auto, required]) => (
+          {fields.map(([name, label, type, auto]) => (
             <div key={name}>
               <label htmlFor={name} className="mb-1 block text-sm font-medium">
                 {label}
@@ -125,7 +92,7 @@ export default function Register() {
               <input
                 id={name}
                 type={type}
-                required={required}
+                required
                 autoComplete={auto}
                 value={form[name]}
                 onChange={setField(name)}
@@ -133,6 +100,20 @@ export default function Register() {
               />
             </div>
           ))}
+
+          <label className="flex items-start gap-3 text-sm text-muted">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              className="mt-1"
+            />
+            <span>
+              I understand that Mental Notes stores my answers and results so I
+              can see my history. It is a screening tool, not a diagnosis, and
+              it does not replace advice from a qualified professional.
+            </span>
+          </label>
 
           {error && (
             <p
@@ -151,6 +132,13 @@ export default function Register() {
             {busy ? "Creating account..." : "Create account"}
           </button>
         </form>
+
+        <p className="mt-6 text-sm text-muted">
+          Already have an account?{" "}
+          <Link to="/login" className="text-brand underline">
+            Log in
+          </Link>
+        </p>
       </div>
     </div>
   );

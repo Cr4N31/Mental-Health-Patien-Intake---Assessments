@@ -6,9 +6,9 @@ export function requireAuth(req, res, next) {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.therapistId = payload.sub;
+    req.userId = payload.sub;
     next();
   } catch {
-    res.status(404).json({ message: "Session expired, please log in" });
+    res.status(401).json({ message: "Session expired, please log in" });
   }
 }
