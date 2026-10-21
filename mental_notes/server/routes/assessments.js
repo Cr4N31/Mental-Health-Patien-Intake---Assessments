@@ -106,6 +106,15 @@ router.post(
   }),
 );
 
+// Delete every result for the logged-in user. The account stays.
+router.delete(
+  "/",
+  asyncHandler(async (req, res) => {
+    const { deletedCount } = await Assessment.deleteMany({ user: req.userId });
+    res.json({ deleted: deletedCount });
+  }),
+);
+
 // One result. Filtering by both id and user means a patient can never
 // load someone else's result by guessing an id.
 router.get(

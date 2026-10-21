@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
-import { errorMessage } from "../api/client.js";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { errorMessage } from "../../api/client.js";
 
 export default function Login() {
   const { user, loading, login } = useAuth();
@@ -72,6 +72,12 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-md border border-line bg-paper px-3 py-2"
             />
+          </div>
+
+          <div className="text-right text-sm">
+            <Link to="/forgot-password" className="text-brand underline">
+              Forgot password?
+            </Link>
           </div>
 
           {error && (

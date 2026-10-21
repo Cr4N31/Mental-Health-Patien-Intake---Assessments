@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api, { errorMessage } from "../api/client.js";
+import api, { errorMessage } from "../../api/client.js";
 import {
   FORM_TYPES,
   FORM_INFO,
   severityLabel,
   formatDate,
-} from "../lib/assessmentInfo.js";
+} from "../../lib/assessmentInfo.js";
 
 export default function History() {
   const [items, setItems] = useState(null);

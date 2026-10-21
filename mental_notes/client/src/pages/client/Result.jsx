@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import api, { errorMessage } from "../api/client.js";
+import api, { errorMessage } from "../../api/client.js";
 import {
   FORM_INFO,
   severityLabel,
   severityMeaning,
   changeText,
   formatDate,
-} from "../lib/assessmentInfo.js";
-import { CRISIS_RESOURCES } from "../config/crisis.js";
+} from "../../lib/assessmentInfo.js";
+import { CRISIS_RESOURCES, CRISIS_REGION } from "../../config/crisis.js";
 
 function CrisisBlock() {
   return (
@@ -30,14 +30,24 @@ function CrisisBlock() {
           room. If you can, tell someone you trust how you are feeling today.
         </p>
         {CRISIS_RESOURCES.length > 0 && (
-          <ul className="space-y-2">
-            {CRISIS_RESOURCES.map((r) => (
-              <li key={r.name}>
-                <span className="font-medium">{r.name}</span>: {r.contact}
-                {r.note ? ` (${r.note})` : ""}
-              </li>
-            ))}
-          </ul>
+          <div>
+            <p className="font-medium">Support lines in {CRISIS_REGION}</p>
+            <ul className="mt-2 space-y-3">
+              {CRISIS_RESOURCES.map((r) => (
+                <li key={r.name}>
+                  <span className="font-medium">{r.name}</span>:{" "}
+                  {r.tel ? (
+                    <a href={`tel:${r.tel}`} className="underline">
+                      {r.contact}
+                    </a>
+                  ) : (
+                    r.contact
+                  )}
+                  {r.note && <span className="block text-sm">{r.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     </section>

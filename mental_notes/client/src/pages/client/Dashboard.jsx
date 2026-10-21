@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
-import api, { errorMessage } from "../api/client.js";
-import ProgressChart from "../components/ProgressChart.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
+import api, { errorMessage } from "../../api/client.js";
+import ProgressChart from "../../components/ProgressChart.jsx";
+import VerifyBanner from "../../components/VerifyBanner.jsx";
 import {
   FORM_TYPES,
   FORM_INFO,
@@ -10,7 +11,7 @@ import {
   changeText,
   formatDate,
   isHigh,
-} from "../lib/assessmentInfo.js";
+} from "../../lib/assessmentInfo.js";
 
 function FormCard({ type, summary }) {
   const info = FORM_INFO[type];
@@ -112,11 +113,16 @@ export default function Dashboard() {
           <Link to="/history" className="text-brand underline">
             History
           </Link>
+          <Link to="/settings" className="text-brand underline">
+            Settings
+          </Link>
           <button onClick={handleLogout} className="text-muted underline">
             Log out
           </button>
         </div>
       </header>
+
+      <VerifyBanner />
 
       <h1 className="mt-10 font-serif text-4xl font-semibold text-brand-dark">
         Hello, {firstName}

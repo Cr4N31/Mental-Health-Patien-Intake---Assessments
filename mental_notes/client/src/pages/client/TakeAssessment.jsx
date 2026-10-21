@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import api, { errorMessage } from "../api/client.js";
-import { FORM_INFO } from "../lib/assessmentInfo.js";
+import api, { errorMessage } from "../../api/client.js";
+import { FORM_INFO } from "../../lib/assessmentInfo.js";
 
 function Shell({ children }) {
   return (

@@ -37,8 +37,20 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  // Re-read the user from the server (for example after verifying an email).
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await api.get("/auth/me");
+      setUser(res.data);
+    } catch {
+      /* not logged in, nothing to refresh */
+    }
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, logout, register, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

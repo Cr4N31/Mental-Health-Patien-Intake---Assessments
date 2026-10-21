@@ -1,14 +1,36 @@
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
-export function requireAuth(req, res, next) {
+export async function requireAuth(req, res, next) {
   const token = req.cookies?.token;
   if (!token) return res.status(401).json({ message: "Not authenticated" });
 
+  let payload;
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    return res.status(401).json({ message: "Session expired, please log in" });
+  }
+
+  try {
+    const user = await User.findById(payload.sub).select("passwordChangedAt");
+
+    // Account deleted
+    if (!user) return res.status(401).json({ message: "Not authenticated" });
+
+    // Password was reset after this session was issued
+    if (
+      user.passwordChangedAt &&
+      payload.iat < Math.floor(user.passwordChangedAt.getTime() / 1000)
+    ) {
+      return res
+        .status(401)
+        .json({ message: "Session expired, please log in" });
+    }
+
     req.userId = payload.sub;
     next();
-  } catch {
-    res.status(401).json({ message: "Session expired, please log in" });
+  } catch (err) {
+    next(err);
   }
 }
