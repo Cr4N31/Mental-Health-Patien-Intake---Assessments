@@ -2,7 +2,9 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 export async function requireAuth(req, res, next) {
-  const token = req.cookies?.token;
+  const authorization = req.get("authorization") || "";
+  const bearer = authorization.match(/^Bearer\s+(.+)$/i)?.[1];
+  const token = bearer || req.cookies?.token;
   if (!token) return res.status(401).json({ message: "Not authenticated" });
 
   let payload;

@@ -77,6 +77,12 @@ function setAuthCookie(res, userId) {
   res.cookie("token", token, { ...cookieOptions, maxAge: SEVEN_DAYS });
 }
 
+function createAuthToken(userId) {
+  return jwt.sign({ sub: String(userId) }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+}
+
 function publicUser(u) {
   return {
     id: u._id,
@@ -193,6 +199,56 @@ router.post(
 
     setAuthCookie(res, user._id);
     res.status(201).json(publicUser(user));
+  }),
+);
+
+// Native clients store this bearer token in platform secure storage.
+// The existing cookie endpoints remain unchanged for the browser application.
+router.post(
+  "/mobile/session",
+  authLimiter,
+  asyncHandler(async (req, res) => {
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: "Enter a valid email and password" });
+    }
+    const { email, password } = parsed.data;
+    const user = await User.findOne({ email }).select("+passwordHash");
+    const ok = await bcrypt.compare(password, user?.passwordHash ?? DUMMY_HASH);
+    if (!user || !ok) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    res.json({ token: createAuthToken(user._id), user: publicUser(user) });
+  }),
+);
+
+router.post(
+  "/mobile/register",
+  authLimiter,
+  asyncHandler(async (req, res) => {
+    const parsed = registerSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ message: parsed.error.issues[0].message });
+    }
+    const { name, email, password } = parsed.data;
+    const passwordHash = await bcrypt.hash(password, 12);
+    let user;
+    try {
+      user = await User.create({
+        name,
+        email,
+        passwordHash,
+        consentAcceptedAt: new Date(),
+        consentVersion: CONSENT_VERSION,
+      });
+    } catch (err) {
+      if (err.code === 11000) {
+        return res.status(409).json({ message: "An account with this email already exists" });
+      }
+      throw err;
+    }
+    sendVerificationEmail(user).catch(logMailError("verification"));
+    res.status(201).json({ token: createAuthToken(user._id), user: publicUser(user) });
   }),
 );
 
