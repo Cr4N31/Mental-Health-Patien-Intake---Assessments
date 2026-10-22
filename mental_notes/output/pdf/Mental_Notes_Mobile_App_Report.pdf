@@ -1,0 +1,518 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 4
+/Kids [ 4 0 R 10 0 R 13 0 R 15 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Contents 5 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font <<
+/F1 6 0 R
+/F1-0 7 0 R
+/F2 8 0 R
+/F2-0 9 0 R
+>>
+/ProcSet [ /ImageB /ImageC /ImageI /PDF /Text ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+5 0 obj
+<<
+/Length 7326
+>>
+stream
+q
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+.862745 .886275 .870588 RG
+.5 w
+n 51.02362 42.51969 m 544.252 42.51969 l S
+BT /F1 7.5 Tf 9 TL ET
+.407843 .45098 .435294 rg
+BT 1 0 0 1 51.02362 28.34646 Tm (MENTAL NOTES  |  MOBILE APP REPORT  |  22 OCT 2026) Tj T* ET
+BT 1 0 0 1 540.082 28.34646 Tm (1) Tj T* ET
+Q
+q
+1 0 0 1 57.02362 776.7008 cm
+q
+.184314 .435294 .384314 rg
+BT 1 0 0 1 0 3 Tm /F2 8 Tf 11 TL (EXPO MOBILE / IMPLEMENTATION REPORT) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 709.7008 cm
+q
+BT 1 0 0 1 0 35 Tm 31 TL /F2 27 Tf .141176 .341176 .301961 rg (Mental Notes) Tj  T* (Mobile App) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 669.7008 cm
+q
+.407843 .45098 .435294 rg
+BT 1 0 0 1 0 21 Tm /F1 11 Tf 16 TL (What is implemented, how the mobile client works, and what remains before a dependable release) Tj T* (build. This report covers the Expo mobile app only.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 538.7008 cm
+q
+.141176 .341176 .301961 rg
+n 0 120 493.2283 -24 re f*
+1 1 1 rg
+n 0 96 493.2283 -36 re f*
+.94902 .964706 .952941 rg
+n 0 60 493.2283 -24 re f*
+1 1 1 rg
+n 0 36 493.2283 -36 re f*
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 8 103 cm
+q
+1 1 1 rg
+BT 1 0 0 1 0 2 Tm /F2 8 Tf 10 TL (APP STATUS) Tj T* ET
+Q
+Q
+q
+1 0 0 1 169.5748 103 cm
+q
+1 1 1 rg
+BT 1 0 0 1 0 2 Tm /F2 8 Tf 10 TL (BUILD SETUP) Tj T* ET
+Q
+Q
+q
+1 0 0 1 331.1496 103 cm
+q
+1 1 1 rg
+BT 1 0 0 1 0 2 Tm /F2 8 Tf 10 TL (CURRENT CHECKS) Tj T* ET
+Q
+Q
+q
+1 0 0 1 8 67 cm
+q
+BT 1 0 0 1 0 14 Tm 11 TL /F2 8 Tf .141176 .188235 .176471 rg (Working mobile MVP) Tj /F1 8 Tf  T* (SDK 57 / React Native / TypeScript) Tj T* ET
+Q
+Q
+q
+1 0 0 1 169.5748 67 cm
+q
+BT 1 0 0 1 0 14 Tm 11 TL /F2 8 Tf .141176 .188235 .176471 rg (Expo project linked) Tj /F1 8 Tf  T* (Android APK preview build submitted) Tj T* ET
+Q
+Q
+q
+1 0 0 1 331.1496 67 cm
+q
+BT 1 0 0 1 0 14 Tm 11 TL /F2 8 Tf .141176 .188235 .176471 rg (Passed) Tj /F1 8 Tf  T* (TypeScript and Android bundle export) Tj T* ET
+Q
+Q
+q
+1 0 0 1 8 43 cm
+q
+1 1 1 rg
+BT 1 0 0 1 0 2 Tm /F2 8 Tf 10 TL (TESTING) Tj T* ET
+Q
+Q
+q
+1 0 0 1 169.5748 43 cm
+q
+1 1 1 rg
+BT 1 0 0 1 0 2 Tm /F2 8 Tf 10 TL (API CONFIG) Tj T* ET
+Q
+Q
+q
+1 0 0 1 331.1496 43 cm
+q
+1 1 1 rg
+BT 1 0 0 1 0 2 Tm /F2 8 Tf 10 TL (NEXT) Tj T* ET
+Q
+Q
+q
+1 0 0 1 8 7 cm
+q
+.141176 .188235 .176471 rg
+BT 1 0 0 1 0 14 Tm /F1 8 Tf 11 TL (Phone sign-in and assessment flow) Tj T* (confirmed in Expo Go.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 169.5748 18 cm
+q
+.141176 .188235 .176471 rg
+BT 1 0 0 1 0 3 Tm /F1 8 Tf 11 TL (APK points at temporary API tunnel.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 331.1496 18 cm
+q
+.141176 .188235 .176471 rg
+BT 1 0 0 1 0 3 Tm /F1 8 Tf 11 TL (Deploy mobile auth API before release.) Tj T* ET
+Q
+Q
+q
+1 J
+1 j
+.862745 .886275 .870588 RG
+.35 w
+n 0 120 m 493.2283 120 l S
+n 0 0 m 493.2283 0 l S
+n 0 0 m 0 120 l S
+n 493.2283 0 m 493.2283 120 l S
+n 0 96 m 493.2283 96 l S
+n 0 60 m 493.2283 60 l S
+n 0 36 m 493.2283 36 l S
+n 161.5748 0 m 161.5748 120 l S
+n 323.1496 0 m 323.1496 120 l S
+Q
+Q
+Q
+q
+1 0 0 1 57.02362 529.7008 cm
+Q
+q
+1 0 0 1 57.02362 505.7008 cm
+q
+.141176 .341176 .301961 rg
+BT 1 0 0 1 0 4 Tm /F2 17 Tf 21 TL (1. What was changed) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 442.5008 cm
+q
+BT 1 0 0 1 0 44 Tm 13.3 TL /F1 9.2 Tf .141176 .188235 .176471 rg (A separate ) Tj /F2 9.2 Tf (expo-mobile/) Tj /F1 9.2 Tf ( application was created alongside the existing web app. It uses Expo Router for screen) Tj T* (navigation and React Native components and styles. Mobile screens were implemented for sign-in, account creation,) Tj T* (dashboard, assessments, results, history, profile, and settings. The mobile app is aligned to ) Tj /F2 9.2 Tf (Expo SDK 57) Tj /F1 9.2 Tf ( for the) Tj T* (Expo Go version used during phone testing.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 409.9008 cm
+q
+.141176 .188235 .176471 rg
+BT 1 0 0 1 0 17.4 Tm /F1 9.2 Tf 13.3 TL (The mobile dashboard includes a native progress chart for PHQ-9 and GAD-7 results, with questionnaire selection,) Tj T* (comparison view, score scale, dates, and empty/single-result states. It reads the user's assessment history.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 382.9008 cm
+q
+.141176 .341176 .301961 rg
+BT 1 0 0 1 0 4 Tm /F2 17 Tf 21 TL (2. What was implemented) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 360.4008 cm
+q
+BT 1 0 0 1 1 3.6 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 3.6 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (Navigation:) Tj /F1 8.9 Tf ( file-based Expo Router routes, protected-screen redirect, and mobile-friendly links and buttons.) Tj T* 1.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 57.02362 329.4008 cm
+q
+BT 1 0 0 1 1 16.1 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 16.1 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (Authentication:) Tj /F1 8.9 Tf ( login, registration, password-reset request, verification resend, sign-out, and protected sessions using) Tj T* 1.5 0 Td (a seven-day bearer JWT stored with Expo SecureStore.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 298.4008 cm
+q
+BT 1 0 0 1 1 16.1 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 16.1 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (Assessments:) Tj /F1 8.9 Tf ( PHQ-9 and GAD-7 answer flows and API submission; score calculation and persistence remain on the) Tj T* 1.5 0 Td (existing backend.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 279.9008 cm
+q
+BT 1 0 0 1 1 3.6 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 3.6 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (Results and history:) Tj /F1 8.9 Tf ( detailed result view, recent check-ins, history list, and form filters.) Tj T* 1.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 57.02362 261.4008 cm
+q
+BT 1 0 0 1 1 3.6 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 3.6 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (Account features:) Tj /F1 8.9 Tf ( profile view/edit and settings actions, including result deletion and confirmed account deletion.) Tj T* 1.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 57.02362 242.9008 cm
+q
+BT 1 0 0 1 1 3.6 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 3.6 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (API integration:) Tj /F1 8.9 Tf ( Axios bearer-token injection and existing assessment API contracts.) Tj T* 1.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 57.02362 211.9008 cm
+q
+BT 1 0 0 1 1 16.1 Tm /F1 10 Tf 12 TL .141176 .188235 .176471 rg (\177) Tj ET
+BT 1 0 0 1 12 16.1 Tm -1.5 0 Td 12.5 TL /F2 8.9 Tf .141176 .188235 .176471 rg (Native UI:) Tj /F1 8.9 Tf ( View, Text, Pressable, TextInput, ScrollView, FlatList, StyleSheet, and SVG rendering replace web DOM,) Tj T* 1.5 0 Td (CSS, React Router, and Recharts.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 203.9008 cm
+Q
+q
+1 0 0 1 57.02362 158.0008 cm
+q
+.141176 .188235 .176471 rg
+BT 1 0 0 1 0 30.7 Tm /F1 9.2 Tf 13.3 TL (Reusable business logic includes existing API contracts, server-side scoring and persistence, assessment definitions) Tj T* -0.031261 Tw (and severity interpretation, and product flow. Browser-only components and styling were rewritten for native navigation) Tj T* 0 Tw (and presentation.) Tj T* ET
+Q
+Q
+ 
+
+Q
+
+q
+0.0 0.0 595.2756 841.8898 re
+W
+n
+1 0 0 1 0 0 cm
+BT
+/F1-0 12 Tf
+14.4 TL
+ET
+0.141176 0.341176 0.301961 rg
+n
+51 573 493 24 re
+f*
+1 1 1 rg
+BT
+/F2-0 8 Tf
+9.6 TL
+ET
+BT
+1 0 0 1 65 584.5 Tm
+(TESTING) Tj
+T*
+ET
+BT
+1 0 0 1 226.6 584.5 Tm
+(API CONFIG) Tj
+T*
+ET
+BT
+1 0 0 1 388.2 584.5 Tm
+(NEXT) Tj
+T*
+ET
+Q
+
+
+endstream
+endobj
+6 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+7 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+8 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+9 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+10 0 obj
+<<
+/Contents 11 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font 12 0 R
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+11 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 2344
+>>
+stream
+Gb!;d9lo&I&A@sBm*Y3&1d=F73@V5]\lC<#Assc%PG(NL6:6kd5[&0*5JF`08WeiT-`R^EG\icjJ6fhDIJY,p9`20FhdciY14m^$(0EI_pL(Od$dfB[dFk.)7PM9!f)m7jJ*>??]c_j[+3t?+[V%UFQ=8LmfETqc4=_D,YQ<'m%GU1XAT2kE)"DSd=pZ,]L26X:l[[r?Af0H]j4U+6@R]mj`m;qb*>jeuG/k/2i;Cjl-CW0:Afa\8!<*1I1Oj[5S&/^@JD9<tIN,7`gP5O)#].s2Ig=@C&:I>tqn'J;@0W?@DYN;-73K1`IcH=SNt'u'!sF^)ZLAEkg\GbIqK[;q'-,a(o!JpXK%_C_cH5%sZh\sXKW@[$J]Z.O9\r3&%:%QSKP(dbE%T6TU[e',7.dT7S8_[[/>'SZ[24%D?n@WUk:+=n=n@Ls<@ukP??i1:F^F.9c4.T!*Q,;f#=^U<`8LWAgm!9A3O[P3j#(n:cj`\gN,\.[->je9e@S/H\Sol'A,h41]r/?qn#iX/dbq1s10)QcY..XX"0`bLK@as%#add!)H4]Bea7I)F"fY@'c<NtekXo1WMJi=MqM'p=`cekC^U,"rQg(6"bH%`?f6S&Iqa%D*R'BUc`ma$?fcG+'dl)jW\q#,'3G)4"3+K0apWHM1S3T&O^Gne`I`r/A5_DCaJogAMHrJFjHAWTKrUCnQ?$2cF<m5a(#ZTH1lbrYfZsQJ<@lbF+r9Fl.%P$i#gt9,R&iP""eH>-=NC5p6,c#2#S0VuH_)Y0+>549+@N%S<]F+-<7)g7=G#bp#YR@AGV5&Nj?6""9dGF1K1;JfksU.kR,6DM'#KaN*'#.ejd$4_c\ehcs($*YZ<hFY8uEIJR6^*]M6j#'#[jU^9OiGY)Ws*nka'=OX!Ca#RT!NW5)mpGG)$@Z`=In_JZM5]WgIG1jck?[n=l5\oRJNsekeMq<1I+1`6j6`NdOuc!\H.$+BDK)?cf3CH&f7GmIp(+PGG/KlEYtU'B_nLPfam[UnE&e2S/,?$\<))-0dm<=e*k.?FYI(h`m.D3_/Ksh5N?F`^Z#bj)T:.h@"BYD"]4LVB"6E3dq#C5'F-Ri@8n]`ucl'GAFk-&oY6gBVr+F=f.3'Xm7$3#N$R:4FYohT)B>l^D"O/8`N:.R9CqADH!Ze'!nOTBY+l(b#`74b;+Z&[FnJ]MR'N^eBlRo!lo8E0+i5(>a@c^R:\#D#q6"X"f@na`VE&H"uL`c;b^QHrsIoqS[*j@[`!19m#_m%X+dSKaE42r0jId(04K*Cg4PtiQCoRA>O`*\;b>nD?Vq;AA&acK/LK@%FgWh)s%?R%ZT)O5!'8#`/Kr4qXV=`Y82qRqnY[d=N/B`E`"FRaEi*gD.]M#tRV%@ZRI)CbeKNB?(YXRSSD^*h$eVV]aD#<d/EpMn;;`t#[Y>E;m5L8WR-qQT\j8:]n%VT(/,$caU/^;CMTH_J$Ejq`LRffq@t`0sBT%"qPK(t[<D,^o'<H^+$cGjUokKIol(P+H=#8*j\7/BGG)/Z=E19p%QGg9:]]XQDCpD/o.,.S,i2.?Q0"gZKkV\-c<N,+F67cPB0/K3`N#>#8:*iS`>Kf;_hS#Fb^\WJh5.nLu)).W:iU0-o3F-]jPiT@^]'=79X4_Q[5B'K\$L<ILn9C@pE'aT%An+uB,g$Hf/hh6"Fho<>?l',^(Q#t]p(iY0d1=d[$#L&;ARhl&IeVOND$$bf[i'DATD"S(QR?osDf8;IX-!)#=!;rGG/!d`E]]g8l;MpfS%nf2H@*/9j)Mg#WpH+T]hmm(7tIt?GeptQ<:uJi81kd'Aut1$i/1NF=la\&=On3<k')(D\E&u2;UVDeV9>1KOjoHu.V'PoN"TCEm4nk:!@8o%dJ;DL8n]0Z1*GDOZF++'SM1N;kcu@[;"gs3J1FZ4`T)K-E50\m(AJMZiEB-bGf!gLk&N<g4XIefd+OB+p(?:!&ZF"1#+<J`@j30,9IBt\[lp'AF9kEiN#N(Tak(=_q".PfUmni#Il+>>G'CtapX`2"!OZ;0N26>dGND6<h38epN-`(Z*Rck#cAS8C$VcUb;XIQ>@8_jOh_!_e2M^1LOmL\hN@a]>2bS.L]V"F<1fRa#gGqS$J!UFI<^.u79)RsckE)#L&9Y-T^(UG13mDhNdoegBKH41.E;Xp2:n9(I,rPT_iCr[YitKQaS4D+_H3Qj6P@5=js,6fBjJaOeFiunlfJ-(`O/NVQ<Y\NM=)1Ssa0?/K@uUr`q;>t23uK+lK1L^a_1pJ2W6s5e:7='tU)?C*'XaHKo[=1=g[C3qpG9$BW=u1DUL0u=06KCkJFm+.U\l,&#&-'o#H81H9E~>
+endstream
+endobj
+12 0 obj
+<<
+/F1 6 0 R
+/F2 8 0 R
+>>
+endobj
+13 0 obj
+<<
+/Contents 14 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font 12 0 R
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+14 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 2701
+>>
+stream
+GauHL>BALh(4Q"]300X[>Nc9IR3sa5=Z3tt1Rjq*+Z7W'Ut/'<L9:FEo:=GI#9<)N9t>'k]%)3]htbR:+qm2,rYrdDn)i-s@$,$LHqBW>\2:soao(/E$c<q96aojGa8bYld-Q*#bs#GNIG.sPe@,k8Fp9k8[aDQRK+Z)PG?r,SGJ8sunY3U*M"bl3W4Kibc(X;]A@R&/jPe#@gEW&j(%8U]3L`*HcZ%Zj4.pjmQa`0jq=o^4mcTd(UAkn_hS5Q:9PF@n5dSSMrG8XO[;EMTD,.NR%t:8K=.905pNB>V9uHUp*:@qBIYK#7c,3/<iG`05:"+^qfhN<IYhV]s_^V2goe=MH_g<JAo!GAJ[_h.^jM.o.AA4Ij+"-h'^Rs@W*Zkn\3%dVV4:oB;XPj/Gf:OCkDga!d>74jK=UMd*ilg%/-nf*F;'JDq;k[kJa:CWMSfrsTFX9&gX/<Tk/tlolHOR8,o<k5VA[jfrBc3ljadcn37NrU>+[Ugc,8VU5&a'ir$NCoeBB?%Q\C_+MkiY:nfM.RE;FMZBh>ZT2f&P1S6LlQ>WCT@*&IBkGYP^p;JhdoE58V>#Q$.$=4S'r%m*Ho"j;>>m3HT,U)M48>j&#`SpUI!D*d:`R0h1TP[)j-ognBRW7r6HD,qQGW3J1fH>D'bs4jP3d3T`&1%M&3&QOE."Q,V8(/Kpi3@;8?c%2[RWpW2b58s;3.*5^tpa@m&CLY;<K2P'kfd]8sToUS02qjPuHPM>X"DL2&>^>.$uS\2j[/>-N1Gh!gArq-LjkB&eWcR6'Jj8ed2ee:GTSnC,mD`kPIn#ngq8et^]9`2G`fe`0U)U088lqY0"a+!d2pEGUHSmo*h#g.kj1Qbu?Rpo*[g)uuD"#lNS(l99aR%lXh&\SJ0-Ft"Bn-ssI.r@^%Q[=V>8g[WTfh1BqjqgqS.Etg8![``=O.uQ0O)@]`rB/u:/A07n1^2!3lUN_[Dk?*Ff"8Bd11OGS0k4l<ggh9nO4HpEg%\uJTn49t<C!0AXV1HE<cPQ:A\24.3M[tR+]U9H:5eKOP1Mo.(^kH\"u_nN0Rb,o^5l3Xq:T)DWRrJQLhJ.:*`2e^dld[-liu;l,hgi$RFk-:lN%RU-=@X*P\"=/O\p@X]AH-oG'>5hnm/:)$^2AVc"XXVAs5[?L`S!Q(Tu&l&iS+)0Rq[$maGG6)FrQ9d5jjjiFcfu(<.5I+Y@7,D7M'VJP,K>%bKlZNb#]nK7,E1UbGrf50g>M)hA)N&:3'"f?#@GLl>4Ha^D;^SiV>PHh`LF6Kf:[[]Y*!mI!ei+hF!i"&p'SUr&=m3Zk&RhZJ3%@=\JM,B*S1N](73F\W)s#@gL,K`[B8,aT_-#E`\I9qfcKmMkZe'nMa_R#?W0p9r$M![^4[Te'qc7t(Iha#JS9Dl(V%nF>^rA:?YIEHLAQ/!B5FhfHXa+E,P*2JX_ONb+L1'EgBri@S-Q26n=NM*0]PpZmnW=U,OCCb<roqa(5k^k(4!5&YhWm>o*B^5sM!g[M\[#ej/rNhE;9b=J@0:JgM\ll/24r^o3Be;4^nj=q9o0ClGL)`r>,Tfq?$EE_^U./6lN7TH*:.EWQZat:^4IL)fA!0^Ds>*UqbKRt*9*/<[l0XVs_MKbNm,nC/qJ/f:hQ2f%_#B,OE#D6m4'*7@hq"_T&7Q>Y=Fd3(nAS\'i@!E@-I":oq!OD$EFr&MT&nXb18fGInSs8u1jCc:IL?Zt1%"=#nC0`YS@c6JDdU*c['A>Raon.u#6;IY+Vu\jA):![Ec)0i&c?/*%:V)<m$*#0L$AV,fIC[IF@C[)`=KKJ:rF10hU]8@&f4Tk#:-%,ZgX`n%fD(K+3Jge2ZX=i%D0@g\[[]=5gYV@]4)1,/7Wt-f=>+YigKEOVB$!'CM]_72mm%ns'uDsjc)D3m%P$!!M9SC<]jj.#ms2TlW7O8+*$&.)1HIM,_&8ZER4fHVB"2?:P;^Ud(kbO$Pqm1HP=TSp#Gh7AonVQPNEXL[*'Tan)B!jAGT-:Shoa=D7Gl=FYMQhN=\^uO62Z."6cQYJeGcSMJGc5(2\(YD;QgHbSMaEQPcG6,5L6C;P!0-?-\I>)>)<C;=EO+K9bMT1JF,],NV'!O]Au_]^8O/TF7+X89)3'2bG(FjiGoE)JU0)iS&`,OPbJC=VfLd],F.J>gA5)c^%)njIb1>H>n#k2e?dcR51X:`9a3)(p:o/f9#Y+:gS]C0L_f8F>$L*]4"NI)W]K2sAmG&N1IfE9?k&+I5QRs6":"4o^opE#9Z6/?UHL1b("3teKPHhm+F&D;.R]EM69_Jr?oNKNis"7`_C''?h/DC[N?EIB"Upj%jN7J[2^VrXZWYFmGt#:EDc9(8VpV9:?05#jJ<T"&MF_P7-&&IBc:#HMeM^H[piPg,SaCr?[WuJ2crqD?1O?s[T8>hPZ-YW;r_(Ei)6/F."o4*6+9M03)<[&1"cufVgF=#k.&giASQSBo^iNN%Cp4o2@F>WMY*u*JYi2bfQ:$^;I,4H;R1.WrnQ!';f,HSWbdkRPJ^5[n`BtG2<CPG4^BP]X+XJ?'.Ni_EB>j:FBi-a-'T9i[r<j^BbF!>n@[i?UNc-Tl_gCo5hIrqWTeS)GO+s7@?9SQC'jPj<?_A5i&&#O(%MZD(g45X0CPO)>A^un+6EC/3+Y(:qH@htr:aEm6TP;doB^%l7YOBD]%sht#](d5jL[A4~>
+endstream
+endobj
+15 0 obj
+<<
+/Annots [ 16 0 R 17 0 R ]
+/Contents 18 0 R
+/MediaBox [ 0 0 595.2756 841.8898 ]
+/Resources <<
+/Font 19 0 R
+/ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>>
+/Rotate 0
+/Trans <<
+>>
+/Type /Page
+/Parent 2 0 R
+>>
+endobj
+16 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057expo\056dev\057accounts\057cran3\057projects\057mental\055notes\055mobile\057builds\0572409b8e2\0557560\0554f1f\055b99b\0559e35b3949e89)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 234 439.8898 320 452.8898 ]
+/Subtype /Link
+/Type /Annot
+/thousands 0
+>>
+endobj
+17 0 obj
+<<
+/A <<
+/S /URI
+/Type /Action
+/URI (https\072\057\057expo\056dev\057accounts\057cran3\057projects\057mental\055notes\055mobile\057builds\057bec87996\055d129\055468d\055ab9b\0556e5a828d7078\043run\055gradlew)
+>>
+/Border [ 0 0 0 ]
+/Rect [ 234 409.8898 320 422.8898 ]
+/Subtype /Link
+/Type /Annot
+/thousands 0
+>>
+endobj
+18 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ]
+/Length 1907
+>>
+stream
+Gatm;>BA7Q'RnB330/Wa`ptFai@3-<l#(3.iXYk$MeXc!W,L<\$Tn7GpQOr':.`>YgW?g_/EqQFnsrDjg%[8m5KSc=`Us"c&T]@,'([Z8iX;3o,KlZ<J`i69-=1(UaE$!W]c%Wq)ENEaL/CKjjBGC;:N2Y86-GT>bB91:M9']>>\.GkqBFBI40VOk7Fn8e_HYT*jb4E&IOdG(C&Dso),DpLng^4_M#JRoGkLM&@Rei4CRWSPYNE*8lSs"Z4sn<n-8-eH9(C(pEdc9=T^mb@gW9$la"0<*Bs?*2+qK.,4;LZXYh.L#aS<c`_Li1#PC^U>DU'n1Bb=/$Rg%VQT2+G"*n6BKm@YFp@l`LH=K]9RRMKUCaqW.rPAW<798?'Q$j*bp<R,"m2Scl&;Q^/%P13Z3Zan>W;Bfs4WDQo;)G3G^eFFBYbCV4X''*3uID1[FdXB,=kt-mE.q2[PZJbBuo^ML#3srGjF'(t>'X]2J_7>S;^Mr:1#4==`"q..8r2:I`-OYj>.s-F]1LbbaG5V>O4pONcL5tH'`Q^h6Yko(t"(]H-,k(K#]n=CmV27:;Q!ElJd1;ol_:h?[V!VCSD(RupOItH6QNaNXDeVCpj4VK=G]DMF(:8U=;I*XfD/Ir0b@2NQCKJ$i%:&,Zps?KVd5V@'A0I6!=\$+NQ^MHZ8GK%ooV(D]-7C<%fIKRj)(B;?Q[]C3IBQ9&)c^LU\<Fn3%p1Fu#J9dN19ZY+N@JFh.jrNG:u0,la"[kPPhA3mOV*N#5KOEfdcqS,]-<9ba=B\U.4&;^`*$VHT:=k?<2)oPOo->%$h4ST-s3p4Xu`OUMXaqJ/t8B3A8OKs?'O=+)1m-Wrg,79([&-RUQP3Ik6U.V/.1$D,'!n^DX32M,g7_/MCWt1:t?g(*0K=d4IN(;F4t]K3sXs3679Vr<qh20Qh=W2<'uo^2=6oOr=iq?a_@0AZ3G4g:qW5d1d-B,?9=+/[7K_SUTne9B8AuX:rjp7d:d?sk>Ru/#BT5`>#uJ6^eS^(0bstlo+1%4Zimeg[-]AD/afH[f_$&,i6@qo,B1!RK(r6[_`BUVC+n]ChH@:LIL_Z&oPGg2\jt6sck>TQH:nlZ.Q7]Qg0gi?6]mWrh,QCoU9AX,h]qBr%Q<V.TkO@T^TSk40YN.@d+(i2cd6Z[Qf]AZQoZ;b^67qGMdC#&0O+6i_qo`W%h9)0*"ZY7VMbJdSLu*"(Ti8?Btuuo_*u&m68:RUgVS!CKap)p_5c=!LoAll5IW+i17qna*L_>D&l223hBX!J3/.^MN&E"`VW]m0<6[4Z<1Y/_*fi=MCFp"1N-.^/e<^tip-:>q\2rLk)fWlO#`0B,-A!J8TZ97]'r]p(l"T9?NFN3PCQYoC"lkoSDYcingbuJ<B&f#ACh*h9;*OR,St@'8,N!RE#nH3bmfhIJ_"%RAW8/Ef//e+R#F*F:9Bbe(NgA$aF7@)A#L\N@e:#.bf#lPo0APC6h]XlqiJWH6ba2Y"mZu8,I3bT\#Xd^V_G9SRr66,Ln=]K#bnXDbc=PC2=BUq<A_"@C0MmD=K3@95.^+!AXlhXc]RR00O$@]b#frl8G9sbY4)4O'@hl$C?K'GtFP1$PASr9#_@:N^';cdsP"f5?U7XWi]=)]S2tID_of6_=QSks$oPDnSZYe=?b!Zb^4LmiBGY<6I<-Sq7@<T7Q>L?Vs2p)2%7i4$#\LL?bd5QUG=h3qiVE&ai27L1Hig&BHar^gF05iR,+r]Yqoa0ct2:ZA*U+L(Z.>ubVk[EU.AYd29*mj!3is,-?J,':\PT%`G`>]5=BW;5@F+-9K<&P)uXYrf2[hUI;16c(,2DhNckbYtdX\EP]k,Tljed`2E=1BaL*nK5l"C?VR35tC5=XI3cobo#fTen2;Tf1HJ,T?Uh^60$+~>
+endstream
+endobj
+19 0 obj
+<<
+/F1 20 0 R
+/F2 21 0 R
+>>
+endobj
+20 0 obj
+<<
+/BaseFont /Helvetica
+/Encoding /WinAnsiEncoding
+/Name /F1
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+21 0 obj
+<<
+/BaseFont /Helvetica-Bold
+/Encoding /WinAnsiEncoding
+/Name /F2
+/Subtype /Type1
+/Type /Font
+>>
+endobj
+xref
+0 22
+0000000000 65535 f 
+0000000015 00000 n 
+0000000054 00000 n 
+0000000134 00000 n 
+0000000183 00000 n 
+0000000426 00000 n 
+0000007804 00000 n 
+0000007911 00000 n 
+0000008018 00000 n 
+0000008130 00000 n 
+0000008242 00000 n 
+0000008444 00000 n 
+0000010881 00000 n 
+0000010923 00000 n 
+0000011125 00000 n 
+0000013919 00000 n 
+0000014147 00000 n 
+0000014455 00000 n 
+0000014781 00000 n 
+0000016781 00000 n 
+0000016825 00000 n 
+0000016933 00000 n 
+trailer
+<<
+/Size 22
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+17046
+%%EOF

@@ -1,0 +1,9 @@
+node_modules/
+node_modules-incomplete/
+.npm-cache/
+.expo/
+.expo-check*/
+.expo-final-check/
+.expo-sdk57-check/
+dist/
+.env

@@ -1,0 +1,2 @@
+# Local migration/build artifacts. Keep the Expo app and PDF report visible to Git.
+/mental_notes/tmp/

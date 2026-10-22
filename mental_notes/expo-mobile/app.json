@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "Mental Notes",
+    "slug": "mental-notes-mobile",
+    "scheme": "mentalnotes",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "android": {
+      "package": "com.cran3.mentalnotes"
+    },
+    "ios": {
+      "bundleIdentifier": "com.cran3.mentalnotes"
+    },
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f773b30f-70f3-4daf-921a-c2e6f2237b85"
+      }
+    },
+    "owner": "cran3"
+  }
+}
