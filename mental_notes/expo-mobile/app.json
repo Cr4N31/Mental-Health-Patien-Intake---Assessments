@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Mental Notes",
-    "slug": "mental-notes-mobile",
-    "scheme": "mentalnotes",
+    "name": "PranatiX",
+    "slug": "pranatix",
+    "scheme": "pranatix",
     "version": "1.0.0",
     "platforms": [
       "ios",

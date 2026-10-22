@@ -6,6 +6,8 @@ import { z } from "zod";
 import rateLimit from "express-rate-limit";
 import User from "../models/User.js";
 import Assessment from "../models/Assessment.js";
+import JournalEntry from "../models/JournalEntry.js";
+import MoodCheckIn from "../models/MoodCheckIn.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendMail } from "../utils/mailer.js";
@@ -424,12 +426,16 @@ router.delete(
     const ok = await bcrypt.compare(parsed.data.password, user.passwordHash);
     if (!ok) return res.status(403).json({ message: "Incorrect password" });
 
-    await Assessment.deleteMany({ user: user._id });
+    await Promise.all([
+      Assessment.deleteMany({ user: user._id }),
+      JournalEntry.deleteMany({ user: user._id }),
+      MoodCheckIn.deleteMany({ user: user._id }),
+    ]);
     await User.deleteOne({ _id: user._id });
 
     res.clearCookie("token", cookieOptions);
     res.json({
-      message: "Your account and all your results have been deleted",
+      message: "Your account and private reflections have been deleted",
     });
   }),
 );

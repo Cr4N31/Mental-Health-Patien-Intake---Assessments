@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.js";
 // Therapist-side routes are archived for now (move the files to routes/_archive/).
 // The assessments route is the patient version (Step 3).
 import assessmentRoutes from "./routes/assessments.js";
+import reflectionRoutes from "./routes/reflections.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -31,6 +32,7 @@ app.use(express.json({ limit: "100kb" }));
 app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/assessments", assessmentRoutes);
+app.use("/api/reflections", reflectionRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
