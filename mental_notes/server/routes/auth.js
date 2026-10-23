@@ -212,7 +212,9 @@ router.post(
   asyncHandler(async (req, res) => {
     const parsed = loginSchema.safeParse(req.body);
     if (!parsed.success) {
-      return res.status(400).json({ message: "Enter a valid email and password" });
+      return res
+        .status(400)
+        .json({ message: "Enter a valid email and password" });
     }
     const { email, password } = parsed.data;
     const user = await User.findOne({ email }).select("+passwordHash");
@@ -245,12 +247,16 @@ router.post(
       });
     } catch (err) {
       if (err.code === 11000) {
-        return res.status(409).json({ message: "An account with this email already exists" });
+        return res
+          .status(409)
+          .json({ message: "An account with this email already exists" });
       }
       throw err;
     }
     sendVerificationEmail(user).catch(logMailError("verification"));
-    res.status(201).json({ token: createAuthToken(user._id), user: publicUser(user) });
+    res
+      .status(201)
+      .json({ token: createAuthToken(user._id), user: publicUser(user) });
   }),
 );
 
