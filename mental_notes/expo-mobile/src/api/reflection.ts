@@ -5,6 +5,9 @@ import type {
   ReflectionInsights,
 } from "../lib/reflections";
 
+export type SafetyLevel = "none" | "elevated" | "high";
+export type Saved<T> = T & { safety?: SafetyLevel };
+
 export type MoodInput = { score: number; emotions: string[]; note: string };
 export type EntryInput = {
   title?: string;
@@ -21,19 +24,21 @@ export const reflectionsApi = {
 
   moods: () => api.get<Mood[]>("/reflections/moods").then((res) => res.data),
   createMood: (input: MoodInput) =>
-    api.post<Mood>("/reflections/moods", input).then((res) => res.data),
+    api.post<Saved<Mood>>("/reflections/moods", input).then((res) => res.data),
 
   entries: (limit = 50) =>
     api
       .get<JournalEntry[]>("/reflections/entries", { params: { limit } })
       .then((res) => res.data),
+  entry: (id: string) =>
+    api.get<JournalEntry>(`/reflections/entries/${id}`).then((res) => res.data),
   createEntry: (input: EntryInput) =>
     api
-      .post<JournalEntry>("/reflections/entries", input)
+      .post<Saved<JournalEntry>>("/reflections/entries", input)
       .then((res) => res.data),
   updateEntry: (id: string, input: Partial<EntryInput>) =>
     api
-      .patch<JournalEntry>(`/reflections/entries/${id}`, input)
+      .patch<Saved<JournalEntry>>(`/reflections/entries/${id}`, input)
       .then((res) => res.data),
   deleteEntry: (id: string) =>
     api.delete(`/reflections/entries/${id}`).then(() => undefined),

@@ -6,10 +6,11 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { reflectionsApi } from "../api/reflection";
+import { reflectionsApi, SafetyLevel } from "../api/reflection";
 import { errorMessage } from "../api/client";
 import { EMOTIONS, MOODS, Mood } from "../lib/reflections";
 import { colors, common } from "../theme/styles";
+import { SupportCard } from "./SupportCard";
 
 type Props = { onSaved?: (mood: Mood) => void };
 
@@ -20,6 +21,7 @@ export function MoodCheckIn({ onSaved }: Props) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [safety, setSafety] = useState<SafetyLevel>("none");
 
   function toggleEmotion(emotion: string) {
     setEmotions((current) =>
@@ -39,12 +41,12 @@ export function MoodCheckIn({ onSaved }: Props) {
     setBusy(true);
     setError("");
     try {
-      // A safety check on the note will plug in here before saving.
       const mood = await reflectionsApi.createMood({
         score,
         emotions,
         note: note.trim(),
       });
+      setSafety(mood.safety ?? "none");
       setSaved(true);
       onSaved?.(mood);
     } catch (err) {
@@ -59,27 +61,31 @@ export function MoodCheckIn({ onSaved }: Props) {
     setEmotions([]);
     setNote("");
     setSaved(false);
+    setSafety("none");
     setError("");
   }
 
   if (saved) {
     return (
-      <View style={common.card}>
-        <Text
-          style={{ color: colors.brandDark, fontSize: 20, fontWeight: "700" }}
-        >
-          Check-in saved
-        </Text>
-        <Text style={common.subtitle}>
-          Thanks for taking a moment for yourself. Hard days count too.
-        </Text>
-        <Pressable
-          accessibilityRole="button"
-          onPress={reset}
-          style={{ marginTop: 14 }}
-        >
-          <Text style={common.link}>Check in again</Text>
-        </Pressable>
+      <View>
+        <SupportCard level={safety} />
+        <View style={common.card}>
+          <Text
+            style={{ color: colors.brandDark, fontSize: 20, fontWeight: "700" }}
+          >
+            Check-in saved
+          </Text>
+          <Text style={common.subtitle}>
+            Thanks for taking a moment for yourself. Hard days count too.
+          </Text>
+          <Pressable
+            accessibilityRole="button"
+            onPress={reset}
+            style={{ marginTop: 14 }}
+          >
+            <Text style={common.link}>Check in again</Text>
+          </Pressable>
+        </View>
       </View>
     );
   }

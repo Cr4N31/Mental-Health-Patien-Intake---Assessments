@@ -5,6 +5,7 @@ import JournalEntry from "../models/JournalEntry.js";
 import MoodCheckIn from "../models/MoodCheckin.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { assessRisk } from "../utils/safety.js";
 
 const router = Router();
 router.use(requireAuth);
@@ -69,6 +70,20 @@ router.get(
   }),
 );
 
+router.get(
+  "/entries/:id",
+  validId,
+  asyncHandler(async (req, res) => {
+    const entry = await JournalEntry.findOne({
+      _id: req.params.id,
+      user: req.userId,
+    });
+    if (!entry)
+      return res.status(404).json({ message: "Journal entry not found" });
+    res.json(entry);
+  }),
+);
+
 router.post(
   "/entries",
   asyncHandler(async (req, res) => {
@@ -79,7 +94,11 @@ router.post(
       ...parsed.data,
       user: req.userId,
     });
-    res.status(201).json(entry);
+    // The entry is always saved. The safety level only tells the app what to show.
+    res.status(201).json({
+      ...entry.toObject(),
+      safety: assessRisk(parsed.data.title, parsed.data.body),
+    });
   }),
 );
 
@@ -99,7 +118,10 @@ router.patch(
     );
     if (!entry)
       return res.status(404).json({ message: "Journal entry not found" });
-    res.json(entry);
+    res.json({
+      ...entry.toObject(),
+      safety: assessRisk(parsed.data.title, parsed.data.body),
+    });
   }),
 );
 
@@ -134,7 +156,9 @@ router.post(
     if (!parsed.success)
       return res.status(400).json({ message: parsed.error.issues[0].message });
     const mood = await MoodCheckIn.create({ ...parsed.data, user: req.userId });
-    res.status(201).json(mood);
+    res
+      .status(201)
+      .json({ ...mood.toObject(), safety: assessRisk(parsed.data.note) });
   }),
 );
 

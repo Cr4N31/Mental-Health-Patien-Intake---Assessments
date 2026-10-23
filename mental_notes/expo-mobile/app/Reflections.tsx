@@ -63,6 +63,20 @@ function ReflectionsContent() {
         <Text
           style={{ color: colors.brandDark, fontSize: 20, fontWeight: "700" }}
         >
+          Journal
+        </Text>
+        <Text style={common.subtitle}>
+          Write about your day, with or without a prompt.
+        </Text>
+        <Link href="/journal" style={[common.link, { marginTop: 14 }]}>
+          Open journal
+        </Link>
+      </View>
+
+      <View style={common.card}>
+        <Text
+          style={{ color: colors.brandDark, fontSize: 20, fontWeight: "700" }}
+        >
           This week
         </Text>
         {!!error && (
