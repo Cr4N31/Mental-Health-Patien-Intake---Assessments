@@ -7,7 +7,7 @@ import rateLimit from "express-rate-limit";
 import User from "../models/User.js";
 import Assessment from "../models/Assessment.js";
 import JournalEntry from "../models/JournalEntry.js";
-import MoodCheckIn from "../models/MoodCheckIn.js";
+import MoodCheckin from "../models/MoodCheckin.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendMail } from "../utils/mailer.js";

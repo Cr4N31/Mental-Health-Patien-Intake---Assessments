@@ -2,7 +2,7 @@ import { Router } from "express";
 import mongoose from "mongoose";
 import { z } from "zod";
 import JournalEntry from "../models/JournalEntry.js";
-import MoodCheckIn from "../models/MoodCheckIn.js";
+import MoodCheckIn from "../models/MoodCheckin.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
