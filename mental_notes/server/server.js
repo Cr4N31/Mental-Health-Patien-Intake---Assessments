@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.js";
 // The assessments route is the patient version (Step 3).
 import assessmentRoutes from "./routes/assessments.js";
 import reflectionRoutes from "./routes/reflections.js";
+import allyRoutes from "./routes/allies.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -33,12 +34,19 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/assessments", assessmentRoutes);
 app.use("/api/reflections", reflectionRoutes);
+app.use("/api/allies", allyRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
 app.use((err, req, res, next) => {
+  if (err.type === "entity.parse.failed") {
+    return res.status(400).json({ message: "Invalid request body" });
+  }
+  if (err.type === "entity.too.large") {
+    return res.status(413).json({ message: "That is too large to send" });
+  }
   console.error(err);
   res.status(500).json({ message: "Something went wrong" });
 });

@@ -8,6 +8,7 @@ import User from "../models/User.js";
 import Assessment from "../models/Assessment.js";
 import JournalEntry from "../models/JournalEntry.js";
 import MoodCheckin from "../models/MoodCheckin.js";
+import ConsultRequest from "../models/ConsultRequest.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendMail } from "../utils/mailer.js";
@@ -435,7 +436,8 @@ router.delete(
     await Promise.all([
       Assessment.deleteMany({ user: user._id }),
       JournalEntry.deleteMany({ user: user._id }),
-      MoodCheckIn.deleteMany({ user: user._id }),
+      MoodCheckin.deleteMany({ user: user._id }),
+      ConsultRequest.deleteMany({ user: user._id }),
     ]);
     await User.deleteOne({ _id: user._id });
 

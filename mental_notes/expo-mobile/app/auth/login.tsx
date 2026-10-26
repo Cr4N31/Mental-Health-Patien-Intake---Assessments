@@ -10,9 +10,9 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { useAuth } from "../src/auth/AuthContext";
-import api, { errorMessage } from "../src/api/client";
-import { colors, common } from "../src/theme/styles";
+import { useAuth } from "../../src/auth/AuthContext";
+import api, { errorMessage } from "../../src/api/client";
+import { colors, common } from "../../src/theme/styles";
 
 export default function LoginScreen() {
   const { user, loading, login } = useAuth();
@@ -23,7 +23,7 @@ export default function LoginScreen() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  if (!loading && user) return <Redirect href="/dashboard" />;
+  if (!loading && user) return <Redirect href="/screens/dashboard" />;
 
   async function submit() {
     setError("");
@@ -31,7 +31,7 @@ export default function LoginScreen() {
     setBusy(true);
     try {
       await login(email.trim(), password);
-      router.replace("/dashboard");
+      router.replace("/screens/dashboard");
     } catch (err) {
       setError(errorMessage(err));
     } finally {
@@ -147,7 +147,7 @@ export default function LoginScreen() {
             }}
           >
             <Text style={{ color: colors.muted }}>No account yet?</Text>
-            <Link href="/signup" style={common.link}>
+            <Link href="/auth/signup" style={common.link}>
               Create an account
             </Link>
           </View>

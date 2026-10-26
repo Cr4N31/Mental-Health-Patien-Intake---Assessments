@@ -7,9 +7,9 @@ import {
   Text,
   View,
 } from "react-native";
-import { RequireAuth } from "../src/components/RequireAuth";
-import { useAuth } from "../src/auth/AuthContext";
-import api, { errorMessage } from "../src/api/client";
+import { RequireAuth } from "../../../src/components/RequireAuth";
+import { useAuth } from "../../../src/auth/AuthContext";
+import api, { errorMessage } from "../../../src/api/client";
 import {
   changeText,
   formatDate,
@@ -17,9 +17,9 @@ import {
   FORM_TYPES,
   FormType,
   severityLabel,
-} from "../src/lib/assessmentInfo";
-import { colors, common } from "../src/theme/styles";
-import { ProgressChart } from "../src/components/ProgressChart";
+} from "../../../src/lib/assessmentInfo";
+import { colors, common } from "../../../src/theme/styles";
+import { ProgressChart } from "../../../src/components/ProgressChart";
 
 type Assessment = {
   _id: string;
@@ -53,7 +53,7 @@ function DashboardContent() {
   }, []);
   async function signOut() {
     await logout();
-    router.replace("/login");
+    router.replace("/auth/login");
   }
   return (
     <ScrollView
@@ -77,13 +77,13 @@ function DashboardContent() {
           Mental Notes
         </Text>
         <View style={{ flexDirection: "row", gap: 14 }}>
-          <Link href="/reflections" style={common.link}>
+          <Link href="/screens/reflections/reflections" style={common.link}>
             Reflect
           </Link>
-          <Link href="/history" style={common.link}>
+          <Link href="/screens/reflections/history" style={common.link}>
             History
           </Link>
-          <Link href="/profile" style={common.link}>
+          <Link href="/screens/profile" style={common.link}>
             Profile
           </Link>
           <Pressable onPress={signOut}>
@@ -232,7 +232,10 @@ function DashboardContent() {
               </Text>
             </View>
           ))}
-          <Link href="/history" style={[common.link, { marginTop: 14 }]}>
+          <Link
+            href="/screens/reflections/history"
+            style={[common.link, { marginTop: 14 }]}
+          >
             View all history
           </Link>
         </View>

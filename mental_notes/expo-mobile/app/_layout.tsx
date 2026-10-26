@@ -6,7 +6,12 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <StatusBar style="dark" />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#f8f7f3" } }} />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: "#f8f7f3" },
+        }}
+      />
     </AuthProvider>
   );
 }

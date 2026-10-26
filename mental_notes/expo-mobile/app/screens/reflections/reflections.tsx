@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
-import { RequireAuth } from "../src/components/RequireAuth";
-import { MoodCheckIn } from "../src/components/MoodCheckin";
-import { reflectionsApi } from "../src/api/reflection";
-import { errorMessage } from "../src/api/client";
-import { moodLabel, ReflectionInsights } from "../src/lib/reflections";
-import { colors, common } from "../src/theme/styles";
+import { RequireAuth } from "../../../src/components/RequireAuth";
+import { MoodCheckIn } from "../../../src/components/MoodCheckin";
+import { reflectionsApi } from "../../../src/api/reflection";
+import { errorMessage } from "../../../src/api/client";
+import { moodLabel, ReflectionInsights } from "../../../src/lib/reflections";
+import { colors, common } from "../../../src/theme/styles";
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
@@ -49,7 +49,7 @@ function ReflectionsContent() {
       }}
       keyboardShouldPersistTaps="handled"
     >
-      <Link href="/dashboard" style={common.link}>
+      <Link href="/screens/reflections/dashboard" style={common.link}>
         Back
       </Link>
       <Text style={[common.title, { marginTop: 18 }]}>Reflections</Text>
