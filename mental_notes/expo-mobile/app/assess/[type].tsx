@@ -23,7 +23,7 @@ function AssessmentContent() {
       router.replace({ pathname: "/results/[id]", params: { id: res.data.assessment._id, change: res.data.change === null ? "first" : String(res.data.change) } });
     } catch (err) { setError(errorMessage(err)); setBusy(false); }
   }
-  if (error && !form) return <View style={[common.screen, { padding: 24, justifyContent: "center" }]}><Text accessibilityRole="alert" style={common.error}>{error}</Text><Link href="/dashboard" style={[common.link, { marginTop: 20 }]}>Back to dashboard</Link></View>;
+  if (error && !form) return <View style={[common.screen, { padding: 24, justifyContent: "center" }]}><Text accessibilityRole="alert" style={common.error}>{error}</Text><Link href="/screens/reflections/dashboard" style={[common.link, { marginTop: 20 }]}>Back to dashboard</Link></View>;
   if (!form) return <View style={[common.screen, { justifyContent: "center" }]}><ActivityIndicator color={colors.brand} /></View>;
   const info = FORM_INFO[type]; const total = form.items.length; const last = index === total - 1;
   return <ScrollView style={common.screen} contentContainerStyle={{ padding: 22, paddingTop: 32, paddingBottom: 46 }}>
@@ -32,7 +32,7 @@ function AssessmentContent() {
       <Text style={[common.subtitle, { fontSize: 18, lineHeight: 28, marginTop: 18 }]}>{info.questions} short questions. It takes about 2 minutes.</Text>
       <Text style={[common.subtitle, { fontSize: 17, lineHeight: 26, marginTop: 12 }]}>There are no right or wrong answers. Choose the option that fits you best. Your answers are saved to your private history.</Text>
       <Pressable accessibilityRole="button" onPress={() => setStarted(true)} style={[common.button, { marginTop: 28 }]}><Text style={common.buttonText}>Start</Text></Pressable>
-      <Link href="/dashboard" style={[common.link, { marginTop: 22 }]}>Cancel</Link>
+      <Link href="/screens/reflections/dashboard" style={[common.link, { marginTop: 22 }]}>Cancel</Link>
     </> : <>
       <Text style={{ color: colors.muted }}>Question {index + 1} of {total}</Text>
       <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: total, now: index + 1 }} style={{ height: 7, backgroundColor: colors.line, borderRadius: 5, marginTop: 10, overflow: "hidden" }}><View style={{ height: 7, width: `${((index + 1) / total) * 100}%`, backgroundColor: colors.brand }} /></View>

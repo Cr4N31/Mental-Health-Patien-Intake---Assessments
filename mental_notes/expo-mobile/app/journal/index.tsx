@@ -42,7 +42,7 @@ function JournalContent() {
         paddingBottom: 48,
       }}
     >
-      <Link href="/reflections" style={common.link}>
+      <Link href="/screens/reflections/reflections" style={common.link}>
         Back
       </Link>
       <Text style={[common.title, { marginTop: 18 }]}>Journal</Text>

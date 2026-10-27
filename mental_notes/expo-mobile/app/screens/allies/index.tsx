@@ -68,7 +68,16 @@ function AlliesContent() {
     alliesApi
       .list(specialization ? { specialization } : undefined)
       .then((data) => !cancelled && setItems(data))
-      .catch((err) => !cancelled && setError(errorMessage(err)));
+      .catch((err) => {
+        console.log(
+          "allies error:",
+          err?.message,
+          err?.response?.status,
+          err?.config?.baseURL,
+          err?.config?.url,
+        );
+        if (!cancelled) setError(errorMessage(err));
+      });
     return () => {
       cancelled = true;
     };

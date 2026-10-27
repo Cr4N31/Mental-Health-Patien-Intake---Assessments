@@ -18,7 +18,7 @@ function ResultContent() {
   const { id, change: rawChange } = useLocalSearchParams<{ id: string; change?: string }>();
   const [assessment, setAssessment] = useState<Assessment | null>(null); const [error, setError] = useState("");
   useEffect(() => { api.get<Assessment>(`/assessments/${id}`).then((res) => setAssessment(res.data)).catch((err) => setError(errorMessage(err))); }, [id]);
-  if (error) return <View style={[common.screen, { padding: 24, justifyContent: "center" }]}><Text accessibilityRole="alert" style={common.error}>{error}</Text><Link href="/dashboard" style={[common.link, { marginTop: 18 }]}>Back to dashboard</Link></View>;
+  if (error) return <View style={[common.screen, { padding: 24, justifyContent: "center" }]}><Text accessibilityRole="alert" style={common.error}>{error}</Text><Link href="/screens/reflections/dashboard" style={[common.link, { marginTop: 18 }]}>Back to dashboard</Link></View>;
   if (!assessment) return <View style={[common.screen, { justifyContent: "center" }]}><ActivityIndicator color={colors.brand} /></View>;
   const info = FORM_INFO[assessment.type]; const change = rawChange === "first" ? null : rawChange === undefined ? undefined : Number(rawChange);
   return <ScrollView style={common.screen} contentContainerStyle={{ padding: 22, paddingTop: 36, paddingBottom: 46 }}>
@@ -36,7 +36,7 @@ function ResultContent() {
     {change !== undefined && <Text style={[common.subtitle, { marginTop: 10 }]}>{changeText(change)}</Text>}
     <Text style={[common.subtitle, { fontSize: 14, marginTop: 10 }]}>A lower score means fewer symptoms.</Text>
     <View style={[common.card, { backgroundColor: colors.line, marginTop: 20 }]}><Text style={{ color: colors.ink, lineHeight: 21, fontSize: 14 }}>This is a screening result, not a diagnosis. It cannot replace advice from a qualified health professional.</Text></View>
-    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 18, marginTop: 25 }}><Link href="/dashboard" style={common.link}>Back to dashboard</Link><Link href="/history" style={common.link}>View history</Link></View>
+    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 18, marginTop: 25 }}><Link href="/screens/reflections/dashboard" style={common.link}>Back to dashboard</Link><Link href="/screens/reflections/history" style={common.link}>View history</Link></View>
   </ScrollView>;
 }
 

@@ -114,7 +114,7 @@ function HistoryContent() {
           <Text style={[common.subtitle, { marginTop: 20 }]}>
             No results yet.
           </Text>
-        ) : null
+        ) : undefined
       }
       renderItem={({ item }) => (
         <Pressable
