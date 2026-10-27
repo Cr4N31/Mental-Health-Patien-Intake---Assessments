@@ -70,7 +70,7 @@ function RequestsContent() {
         paddingBottom: 48,
       }}
     >
-      <Link href="/screens/allies/index" style={common.link}>
+      <Link href="/screens/allies" style={common.link}>
         Back
       </Link>
       <Text style={[common.title, { marginTop: 18 }]}>My requests</Text>
