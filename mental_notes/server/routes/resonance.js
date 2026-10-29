@@ -7,9 +7,9 @@ import {
   pseudonymFor,
   containsContactInfo,
   hitLimit,
-} from "../utils/resonance";
-import Post from "../models/ResonancePost";
-import Comment from "../models/ResonanceComment";
+} from "../utils/resonance.js";
+import Post from "../models/ResonancePost.js";
+import Comment from "../models/ResonanceComment.js";
 
 const router = express.Router();
 router.use(requireAuth);
