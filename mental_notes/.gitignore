@@ -25,6 +25,3 @@ dist-ssr
 *.sw?
 
 
-'{"body":"Today was heavy but I got through it."}' | Out-File -Encoding ascii post.json
-curl.exe -X POST https://mental-health-patien-intake-assessments.onrender.com/api/resonance/posts -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -d "@post.json"
-curl.exe https://mental-health-patien-intake-assessments.onrender.com/api/resonance/posts -H "Authorization: Bearer YOUR_TOKEN"

@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import { requireAuth } from "../middleware/auth";
-import { assessRisk } from "../utils/safety";
+import { requireAuth } from "../middleware/auth.js";
+import { assessRisk } from "../utils/safety.js";
 import {
   keyFor,
   pseudonymFor,
