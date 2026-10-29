@@ -27,7 +27,7 @@ function levelOf(text) {
   return "none";
 }
 
-const uid = (req) => String(req.user._id);
+const uid = (req) => String(req.userId);
 const validId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 function shapePost(p, userId) {
