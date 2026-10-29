@@ -13,10 +13,13 @@ const ResonanceCommentSchema = new mongoose.Schema({
     enum: ["published", "held", "hidden"],
     default: "published",
   },
-  reports: { type: [{ key: String, reason: String }], default: [] },
+  reports: {
+    type: [{ key: String, reason: String }],
+    default: [],
+  },
   createdAt: { type: Date, default: Date.now },
 });
 
 ResonanceCommentSchema.index({ postId: 1, status: 1, _id: 1 });
 
-module.exports = mongoose.model("ResonanceComment", ResonanceCommentSchema);
+export default mongoose.model("ResonanceComment", ResonanceCommentSchema);

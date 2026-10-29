@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ResonancePostSchema = new mongoose.Schema({
   authorKey: { type: String, required: true },
@@ -18,4 +18,4 @@ const ResonancePostSchema = new mongoose.Schema({
 
 ResonancePostSchema.index({ status: 1, _id: -1 });
 
-module.exports = mongoose.model("ResonancePost", ResonancePostSchema);
+export default mongoose.model("ResonancePost", ResonancePostSchema);

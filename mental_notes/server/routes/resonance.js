@@ -319,4 +319,4 @@ router.post("/comments/:id/report", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
