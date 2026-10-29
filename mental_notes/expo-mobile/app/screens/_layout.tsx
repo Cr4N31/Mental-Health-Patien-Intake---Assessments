@@ -47,6 +47,13 @@ export default function ScreensLayout() {
         options={{ title: "Home", tabBarIcon: tabIcon("home", "home-outline") }}
       />
       <Tabs.Screen
+        name="resonance"
+        options={{
+          title: "Resonance",
+          tabBarIcon: tabIcon("chatbubbles", "chatbubbles-outline"),
+        }}
+      />
+      <Tabs.Screen
         name="allies"
         options={{
           title: "Allies",
