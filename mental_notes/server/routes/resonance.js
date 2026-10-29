@@ -88,6 +88,7 @@ router.get("/posts", async (req, res) => {
           : undefined,
     });
   } catch (e) {
+    console.error("Resonance load-posts error:", e);
     res.status(500).json({ error: "Could not load posts." });
   }
 });
@@ -118,6 +119,7 @@ router.post("/posts", async (req, res) => {
       .status(201)
       .json({ post: shapePost(post.toObject(), userId), support: s.support });
   } catch (e) {
+    console.error("Resonance create-post error:", e);
     res.status(500).json({ error: "Could not create post." });
   }
 });
