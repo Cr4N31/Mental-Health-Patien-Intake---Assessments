@@ -8,9 +8,10 @@ type Props = {
   post: ResonancePost;
   onReact: (id: string) => void;
   onPress?: () => void;
+  onMenu?: () => void;
 };
 
-export function PostCard({ post, onReact, onPress }: Props) {
+export function PostCard({ post, onReact, onPress, onMenu }: Props) {
   const content = (
     <>
       <View
@@ -24,9 +25,25 @@ export function PostCard({ post, onReact, onPress }: Props) {
           {post.pseudonym}
           {post.isMine ? " (you)" : ""}
         </Text>
-        <Text style={{ color: colors.muted, fontSize: 13 }}>
-          {timeAgo(post.createdAt)}
-        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <Text style={{ color: colors.muted, fontSize: 13 }}>
+            {timeAgo(post.createdAt)}
+          </Text>
+          {onMenu ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="More options"
+              onPress={onMenu}
+              hitSlop={10}
+            >
+              <Ionicons
+                name="ellipsis-horizontal"
+                size={20}
+                color={colors.muted}
+              />
+            </Pressable>
+          ) : undefined}
+        </View>
       </View>
       <Text
         style={{

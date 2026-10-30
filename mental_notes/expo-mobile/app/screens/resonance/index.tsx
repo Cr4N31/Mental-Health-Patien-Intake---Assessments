@@ -119,7 +119,11 @@ export default function ResonanceFeed() {
         data={posts}
         keyExtractor={(p) => p._id}
         renderItem={({ item }) => (
-          <PostCard post={item} onReact={toggleReaction} />
+          <PostCard
+            post={item}
+            onReact={toggleReaction}
+            onPress={() => router.push(`/screens/resonance/${item._id}`)}
+          />
         )}
         contentContainerStyle={{
           paddingHorizontal: 20,

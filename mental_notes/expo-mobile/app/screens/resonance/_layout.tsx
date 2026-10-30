@@ -14,6 +14,7 @@ export default function ResonanceLayout() {
     >
       <Stack.Screen name="index" options={{ title: "Resonance" }} />
       <Stack.Screen name="compose" options={{ title: "New post" }} />
+      <Stack.Screen name="[id]" options={{ title: "Post" }} />
     </Stack>
   );
 }
