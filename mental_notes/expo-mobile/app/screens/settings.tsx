@@ -12,6 +12,7 @@ import { RequireAuth } from "../../src/components/RequireAuth";
 import { useAuth } from "../../src/auth/AuthContext";
 import api, { errorMessage } from "../../src/api/client";
 import { colors, common } from "../../src/theme/styles";
+import ReminderCard from "@/src/components/ReminderCard";
 
 function SettingsContent() {
   const { user, logout } = useAuth();
@@ -97,6 +98,7 @@ function SettingsContent() {
         <Link href="/screens/profile" style={[common.link, { marginTop: 15 }]}>
           View profile
         </Link>
+        <ReminderCard />
       </View>
       <View style={common.card}>
         <Text
