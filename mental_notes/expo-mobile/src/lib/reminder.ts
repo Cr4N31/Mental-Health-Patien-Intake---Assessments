@@ -49,12 +49,21 @@ export async function loadReminder(): Promise<ReminderSettings> {
   }
 }
 
+// True only if the Android channel was created successfully.
+// If channel creation fails, notifications use Android's default channel.
+let channelReady = false;
+
 async function ensurePermission() {
   if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync(CHANNEL, {
-      name: "Daily reminder",
-      importance: Notifications.AndroidImportance.DEFAULT,
-    });
+    try {
+      await Notifications.setNotificationChannelAsync(CHANNEL, {
+        name: "Daily reminder",
+        importance: Notifications.AndroidImportance.DEFAULT ?? 3,
+      });
+      channelReady = true;
+    } catch {
+      channelReady = false;
+    }
   }
   const current = await Notifications.getPermissionsAsync();
   if (current.granted) return true;
@@ -86,7 +95,7 @@ export async function applyReminder(
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
         hour: next.hour,
         minute: next.minute,
-        channelId: CHANNEL,
+        ...(channelReady ? { channelId: CHANNEL } : {}),
       },
     });
   }
@@ -103,7 +112,7 @@ export async function sendTestReminder(): Promise<boolean> {
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
       seconds: 5,
-      channelId: CHANNEL,
+      ...(channelReady ? { channelId: CHANNEL } : {}),
     },
   });
   return true;

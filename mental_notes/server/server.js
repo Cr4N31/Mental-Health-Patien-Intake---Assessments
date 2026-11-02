@@ -11,6 +11,7 @@ import assessmentRoutes from "./routes/assessments.js";
 import reflectionRoutes from "./routes/reflections.js";
 import allyRoutes from "./routes/allies.js";
 import resonanceRoutes from "./routes/resonance.js";
+import adminRoutes from "./routes/admin.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -43,7 +44,7 @@ app.use("/api/assessments", assessmentRoutes);
 app.use("/api/reflections", reflectionRoutes);
 app.use("/api/allies", allyRoutes);
 app.use("/api/resonance", resonanceRoutes);
-
+app.use("/api/admin", adminRoutes);
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });

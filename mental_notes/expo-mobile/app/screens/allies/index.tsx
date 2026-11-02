@@ -93,7 +93,7 @@ function AlliesContent() {
       }}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Link href="/screens/reflections/dashboard" style={common.link}>
+        <Link href="/screens/home" style={common.link}>
           Back
         </Link>
         <Link href="/screens/allies/requests" style={common.link}>

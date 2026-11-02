@@ -92,6 +92,7 @@ function publicUser(u) {
     name: u.name,
     email: u.email,
     emailVerified: !!u.emailVerified,
+    role: u.role ?? "user",
   };
 }
 

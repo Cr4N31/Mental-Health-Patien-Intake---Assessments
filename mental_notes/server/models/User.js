@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema(
 
     // Sessions issued before this time are rejected (set on password reset)
     passwordChangedAt: { type: Date },
+    role: {
+      type: String,
+      enum: ["user", "moderator", "admin"],
+      default: "user",
+    },
   },
   { timestamps: true },
 );

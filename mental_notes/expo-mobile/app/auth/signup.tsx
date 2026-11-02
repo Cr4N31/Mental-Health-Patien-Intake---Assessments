@@ -28,7 +28,7 @@ export default function SignupScreen() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
-  if (!loading && user) return <Redirect href="/screens/reflections/dashboard" />;
+  if (!loading && user) return <Redirect href="/screens/home" />;
 
   async function submit() {
     setError("");
@@ -52,7 +52,7 @@ export default function SignupScreen() {
         password,
         consent: true,
       });
-      router.replace("/screens/reflections/dashboard");
+      router.replace("/screens/home");
     } catch (err) {
       setError(errorMessage(err));
     } finally {

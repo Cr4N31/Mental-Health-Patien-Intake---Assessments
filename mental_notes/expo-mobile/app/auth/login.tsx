@@ -23,7 +23,7 @@ export default function LoginScreen() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  if (!loading && user) return <Redirect href="/screens/reflections/dashboard" />;
+  if (!loading && user) return <Redirect href="/screens/home" />;
 
   async function submit() {
     setError("");
@@ -31,7 +31,7 @@ export default function LoginScreen() {
     setBusy(true);
     try {
       await login(email.trim(), password);
-      router.replace("/screens/reflections/dashboard");
+      router.replace("/screens/home");
     } catch (err) {
       setError(errorMessage(err));
     } finally {

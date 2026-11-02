@@ -7,14 +7,16 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { Link, useRouter } from "expo-router";
+import { Link, useRouter, usePathname } from "expo-router";
 import { RequireAuth } from "../../src/components/RequireAuth";
 import { useAuth } from "../../src/auth/AuthContext";
 import api, { errorMessage } from "../../src/api/client";
 import { colors, common } from "../../src/theme/styles";
-import ReminderCard from "@/src/components/ReminderCard";
+import ReminderCard from "../../src/components/ReminderCard";
 
 function SettingsContent() {
+  const pathname = usePathname();
+  console.log("SETTINGS mounted at", pathname);
   const { user, logout } = useAuth();
   const router = useRouter();
   const [confirmResults, setConfirmResults] = useState(false);
@@ -78,7 +80,7 @@ function SettingsContent() {
       style={common.screen}
       contentContainerStyle={{ padding: 22, paddingBottom: 48 }}
     >
-      <Link href="/screens/reflections/dashboard" style={common.link}>
+      <Link href="/screens/home" style={common.link}>
         ‹ Back to dashboard
       </Link>
       <Text style={[common.title, { marginTop: 23 }]}>Settings</Text>

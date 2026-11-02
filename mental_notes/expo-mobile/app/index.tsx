@@ -5,8 +5,7 @@ import { colors, common } from "../src/theme/styles";
 
 export default function LandingScreen() {
   const { user, loading } = useAuth();
-  if (!loading && user)
-    return <Redirect href="/screens/reflections/dashboard" />;
+  if (!loading && user) return <Redirect href="/screens/home" />;
   return (
     <ScrollView
       style={common.screen}

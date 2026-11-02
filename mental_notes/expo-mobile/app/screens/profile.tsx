@@ -7,6 +7,7 @@ import api, { errorMessage } from "../../src/api/client";
 import { colors, common } from "../../src/theme/styles";
 
 function ProfileContent() {
+  console.log("PROFILE render");
   const { user } = useAuth();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -29,9 +30,6 @@ function ProfileContent() {
       style={common.screen}
       contentContainerStyle={{ padding: 22, paddingBottom: 44 }}
     >
-      <Link href="/screens/reflections/dashboard" style={common.link}>
-        ‹ Back to dashboard
-      </Link>
       <Text style={[common.title, { marginTop: 24 }]}>Profile</Text>
       <Text style={common.subtitle}>Your Mental Notes account details.</Text>
       <View style={[common.card, { marginTop: 24 }]}>
@@ -85,9 +83,6 @@ function ProfileContent() {
           </Text>
         )}
       </View>
-      <Link href="/screens/settings" style={[common.link, { marginTop: 24 }]}>
-        Account settings
-      </Link>
     </ScrollView>
   );
 }

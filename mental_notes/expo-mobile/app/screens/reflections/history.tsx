@@ -51,7 +51,7 @@ function HistoryContent() {
       keyExtractor={(item) => item._id}
       ListHeaderComponent={
         <View>
-          <Link href="/screens/reflections/dashboard" style={common.link}>
+          <Link href="/screens/home" style={common.link}>
             ‹ Back to dashboard
           </Link>
           <Text style={[common.title, { marginTop: 23 }]}>Your history</Text>

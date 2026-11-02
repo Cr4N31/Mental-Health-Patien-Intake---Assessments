@@ -49,7 +49,7 @@ function ReflectionsContent() {
       }}
       keyboardShouldPersistTaps="handled"
     >
-      <Link href="/screens/reflections/dashboard" style={common.link}>
+      <Link href="/screens/home" style={common.link}>
         Back
       </Link>
       <Text style={[common.title, { marginTop: 18 }]}>Reflections</Text>

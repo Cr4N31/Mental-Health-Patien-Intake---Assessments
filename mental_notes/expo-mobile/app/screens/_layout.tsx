@@ -43,7 +43,7 @@ export default function ScreensLayout() {
       }}
     >
       <Tabs.Screen
-        name="reflections"
+        name="home"
         options={{ title: "Home", tabBarIcon: tabIcon("home", "home-outline") }}
       />
       <Tabs.Screen
@@ -68,7 +68,14 @@ export default function ScreensLayout() {
         }}
       />
       {/* Reachable from Profile, but not shown in the bar. */}
-      <Tabs.Screen name="settings" options={{ href: null }} />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: "Settings",
+          href: "/screens/account",
+          tabBarIcon: tabIcon("settings", "settings-outline"),
+        }}
+      />
     </Tabs>
   );
 }
