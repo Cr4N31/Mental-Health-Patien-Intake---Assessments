@@ -7,8 +7,10 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter, usePathname } from "expo-router";
 import { RequireAuth } from "../../src/components/RequireAuth";
+import { BackLink } from "../../src/components/BackLink";
 import { useAuth } from "../../src/auth/AuthContext";
 import api, { errorMessage } from "../../src/api/client";
 import { colors, common } from "../../src/theme/styles";
@@ -80,9 +82,7 @@ function SettingsContent() {
       style={common.screen}
       contentContainerStyle={{ padding: 22, paddingBottom: 48 }}
     >
-      <Link href="/screens/home" style={common.link}>
-        ‹ Back to dashboard
-      </Link>
+      <BackLink href="/screens/home" />
       <Text style={[common.title, { marginTop: 23 }]}>Settings</Text>
       <View style={[common.card, { marginTop: 22 }]}>
         <Text
@@ -101,6 +101,51 @@ function SettingsContent() {
           View profile
         </Link>
         <ReminderCard />
+        {(user?.role === "admin" || user?.role === "moderator") && (
+          <Link href="/screens/admin" asChild>
+            <Pressable
+              accessibilityRole="button"
+              style={({ pressed }) => ({
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
+                marginTop: 16,
+                padding: 14,
+                borderRadius: 14,
+                backgroundColor: pressed ? colors.brandSoft : colors.paper,
+                borderWidth: 1,
+                borderColor: colors.line,
+                transform: [{ scale: pressed ? 0.99 : 1 }],
+              })}
+            >
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 13,
+                  backgroundColor: colors.brandSoft,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Ionicons
+                  name="shield-checkmark-outline"
+                  size={20}
+                  color={colors.brandDark}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={{ color: colors.ink, fontWeight: "700" }}>
+                  Admin tools
+                </Text>
+                <Text style={{ color: colors.muted, fontSize: 13, marginTop: 3 }}>
+                  Moderation and activity
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color={colors.muted} />
+            </Pressable>
+          </Link>
+        )}
       </View>
       <View style={common.card}>
         <Text

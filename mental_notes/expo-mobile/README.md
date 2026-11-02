@@ -1,4 +1,4 @@
-# Mental Notes mobile app
+# PranatiX mobile app
 
 Expo Router app using React Native and TypeScript. The original Vite web app is unchanged.
 
@@ -22,4 +22,3 @@ The web app keeps its existing HTTP-only cookie endpoints. The mobile app uses `
 - `npx expo export --platform android`
 
 The native export checks the complete route bundle. Interactive checks still require a simulator or phone and a reachable API.
-

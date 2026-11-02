@@ -1,79 +1,190 @@
+import { useEffect, useRef } from "react";
 import type { ComponentProps } from "react";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Animated, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/theme/styles";
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
 
-// Builds the icon renderer for one tab. The color arrives typed as ColorValue,
-// which can include null, so it is cast to a plain string for Ionicons.
-function tabIcon(active: IconName, inactive: IconName) {
-  return function TabIcon({
-    color,
-    size,
-    focused,
-  }: {
-    color: unknown;
-    size: number;
-    focused: boolean;
-  }) {
-    return (
+function TabIcon({
+  name,
+  size,
+  focused,
+}: {
+  name: IconName;
+  size: number;
+  focused: boolean;
+}) {
+  const scale = useRef(new Animated.Value(focused ? 1 : 0.85)).current;
+
+  useEffect(() => {
+    Animated.spring(scale, {
+      toValue: focused ? 1 : 0.85,
+      useNativeDriver: true,
+      damping: 14,
+      stiffness: 220,
+    }).start();
+  }, [focused, scale]);
+
+  return (
+    <Animated.View
+      style={{
+        width: 34,
+        height: 30,
+        borderRadius: 15,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: focused ? colors.brand : "transparent",
+        transform: [{ scale }],
+      }}
+    >
       <Ionicons
-        name={focused ? active : inactive}
+        name={name}
         size={size}
-        color={color as string}
+        color={focused ? colors.paper : "#BAC9BE"}
       />
-    );
-  };
+    </Animated.View>
+  );
 }
 
 export default function ScreensLayout() {
+  const insets = useSafeAreaInsets();
+
+  const bottomInset = Platform.OS === "android" ? insets.bottom : insets.bottom;
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarActiveTintColor: colors.brand,
-        tabBarInactiveTintColor: colors.muted,
+
+        tabBarActiveTintColor: colors.paper,
+        tabBarInactiveTintColor: "#BAC9BE",
+
         tabBarStyle: {
-          backgroundColor: colors.paper,
-          borderTopColor: colors.line,
+          height: 66 + bottomInset,
+
+          paddingTop: 7,
+          paddingBottom: bottomInset,
+
+          backgroundColor: colors.ink,
+
+          borderTopWidth: 0,
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 24,
+
+          elevation: 12,
+          shadowColor: "#10251A",
+          shadowOpacity: 0.12,
+          shadowRadius: 14,
+          shadowOffset: {
+            width: 0,
+            height: -4,
+          },
         },
-        tabBarLabelStyle: { fontSize: 12 },
+
+        tabBarItemStyle: {
+          display: "flex",
+          flex: 1,
+          paddingTop: 2,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: "600",
+          marginTop: 3,
+          marginBottom: 0,
+        },
       }}
     >
       <Tabs.Screen
         name="home"
-        options={{ title: "Home", tabBarIcon: tabIcon("home", "home-outline") }}
+        options={{
+          title: "Home",
+          tabBarIcon: ({ focused, size }) => (
+            <TabIcon
+              name={focused ? "home" : "home-outline"}
+              size={size}
+              focused={focused}
+            />
+          ),
+        }}
       />
+
       <Tabs.Screen
         name="resonance"
         options={{
           title: "Resonance",
-          tabBarIcon: tabIcon("chatbubbles", "chatbubbles-outline"),
+          tabBarIcon: ({ focused, size }) => (
+            <TabIcon
+              name={focused ? "chatbubbles" : "chatbubbles-outline"}
+              size={size}
+              focused={focused}
+            />
+          ),
         }}
       />
+
       <Tabs.Screen
         name="allies"
         options={{
           title: "Allies",
-          tabBarIcon: tabIcon("people", "people-outline"),
+          tabBarIcon: ({ focused, size }) => (
+            <TabIcon
+              name={focused ? "people" : "people-outline"}
+              size={size}
+              focused={focused}
+            />
+          ),
         }}
       />
+
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: tabIcon("person", "person-outline"),
+          tabBarIcon: ({ focused, size }) => (
+            <TabIcon
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              focused={focused}
+            />
+          ),
         }}
       />
-      {/* Reachable from Profile, but not shown in the bar. */}
+
       <Tabs.Screen
         name="account"
         options={{
           title: "Settings",
           href: "/screens/account",
-          tabBarIcon: tabIcon("settings", "settings-outline"),
+          tabBarIcon: ({ focused, size }) => (
+            <TabIcon
+              name={focused ? "settings" : "settings-outline"}
+              size={size}
+              focused={focused}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="admin"
+        options={{
+          tabBarButton: () => null,
+          tabBarItemStyle: { display: "none" },
+        }}
+      />
+
+      <Tabs.Screen
+        name="reflections"
+        options={{
+          tabBarButton: () => null,
+          tabBarItemStyle: { display: "none" },
         }}
       />
     </Tabs>

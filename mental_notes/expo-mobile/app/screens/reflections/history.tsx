@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   FlatList,
@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../../src/components/RequireAuth";
+import { BackLink } from "../../../src/components/BackLink";
 import api, { errorMessage } from "../../../src/api/client";
 import {
   formatDate,
@@ -51,9 +52,7 @@ function HistoryContent() {
       keyExtractor={(item) => item._id}
       ListHeaderComponent={
         <View>
-          <Link href="/screens/home" style={common.link}>
-            ‹ Back to dashboard
-          </Link>
+          <BackLink href="/screens/home" />
           <Text style={[common.title, { marginTop: 23 }]}>Your history</Text>
           <Text style={common.subtitle}>
             Your past screening check-ins, newest first.

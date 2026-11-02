@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { RequireAuth } from "../../../src/components/RequireAuth";
+import { BackLink } from "../../../src/components/BackLink";
 import { MoodCheckIn } from "../../../src/components/MoodCheckin";
 import { reflectionsApi } from "../../../src/api/reflection";
 import { errorMessage } from "../../../src/api/client";
@@ -10,11 +11,42 @@ import { colors, common } from "../../../src/theme/styles";
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <View style={{ flex: 1 }}>
-      <Text style={{ color: colors.ink, fontSize: 22, fontWeight: "700" }}>
+    <View
+      style={{
+        flexBasis: "45%",
+        flexGrow: 1,
+        minWidth: 120,
+        minHeight: 82,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 10,
+        paddingVertical: 12,
+        borderRadius: 14,
+        backgroundColor: colors.brandSoft,
+      }}
+    >
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={{
+          maxWidth: "100%",
+          color: colors.ink,
+          fontSize: 22,
+          fontWeight: "700",
+          textAlign: "center",
+        }}
+      >
         {value}
       </Text>
-      <Text style={{ color: colors.muted, fontSize: 13, marginTop: 2 }}>
+      <Text
+        numberOfLines={1}
+        style={{
+          color: colors.muted,
+          fontSize: 12,
+          marginTop: 4,
+          textAlign: "center",
+        }}
+      >
         {label}
       </Text>
     </View>
@@ -49,9 +81,7 @@ function ReflectionsContent() {
       }}
       keyboardShouldPersistTaps="handled"
     >
-      <Link href="/screens/home" style={common.link}>
-        Back
-      </Link>
+      <BackLink href="/screens/home" />
       <Text style={[common.title, { marginTop: 18 }]}>Reflections</Text>
       <Text style={common.subtitle}>
         A quiet place to notice how you are doing.
@@ -61,7 +91,12 @@ function ReflectionsContent() {
 
       <View style={common.card}>
         <Text
-          style={{ color: colors.brandDark, fontSize: 20, fontWeight: "700" }}
+          style={{
+            color: colors.brandDark,
+            fontSize: 20,
+            fontWeight: "700",
+            textAlign: "center",
+          }}
         >
           Journal
         </Text>
@@ -75,7 +110,12 @@ function ReflectionsContent() {
 
       <View style={common.card}>
         <Text
-          style={{ color: colors.brandDark, fontSize: 20, fontWeight: "700" }}
+          style={{
+            color: colors.brandDark,
+            fontSize: 20,
+            fontWeight: "700",
+            textAlign: "center",
+          }}
         >
           This week
         </Text>
@@ -91,14 +131,22 @@ function ReflectionsContent() {
           <ActivityIndicator style={{ marginTop: 16 }} color={colors.brand} />
         )}
         {empty && (
-          <Text style={common.subtitle}>
+          <Text style={[common.subtitle, { textAlign: "center" }]}>
             Your weekly summary will appear here after your first check-in.
           </Text>
         )}
         {insights && !empty && (
-          <View style={{ flexDirection: "row", marginTop: 16, gap: 12 }}>
-            <Stat label="check-ins" value={String(insights.checkInCount)} />
-            <Stat label="entries" value={String(insights.entryCount)} />
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              marginTop: 16,
+              gap: 10,
+            }}
+          >
+            <Stat label="Check-ins" value={String(insights.checkInCount)} />
+            <Stat label="journal Entries" value={String(insights.entryCount)} />
             <Stat
               label={
                 insights.averageMood
@@ -107,7 +155,7 @@ function ReflectionsContent() {
               }
               value={insights.averageMood ? String(insights.averageMood) : "-"}
             />
-            <Stat label="most felt" value={insights.topEmotion ?? "-"} />
+            <Stat label="Most felt" value={insights.topEmotion ?? "-"} />
           </View>
         )}
       </View>

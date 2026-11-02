@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "../../src/auth/AuthContext";
+import { BrandLogo } from "../../src/components/BrandLogo";
+import { BackLink } from "../../src/components/BackLink";
 import api, { errorMessage } from "../../src/api/client";
 import { colors, common } from "../../src/theme/styles";
 
@@ -69,7 +71,8 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={{ width: "100%", maxWidth: 460, alignSelf: "center" }}>
-          <Text style={common.title}>Mental Notes</Text>
+          <BrandLogo />
+          <Text style={[common.title, { marginTop: 20 }]}>Welcome back</Text>
           <Text style={common.subtitle}>Log in to your account.</Text>
           <View style={{ marginTop: 30, gap: 17 }}>
             <View>
@@ -151,9 +154,7 @@ export default function LoginScreen() {
               Create an account
             </Link>
           </View>
-          <Link href="/" style={[common.link, { marginTop: 26 }]}>
-            Back to home
-          </Link>
+          <BackLink href="/" style={{ marginTop: 18 }} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

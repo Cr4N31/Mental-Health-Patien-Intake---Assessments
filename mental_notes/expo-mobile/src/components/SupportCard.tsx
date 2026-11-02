@@ -1,4 +1,5 @@
 import { Linking, Pressable, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import type { SafetyLevel } from "../api/reflection";
 import { CRISIS_RESOURCES, EMERGENCY_NOTE } from "../config/crisis";
 import { colors, common } from "../theme/styles";
@@ -68,10 +69,29 @@ export function SupportCard({
       {onContinue && (
         <Pressable
           accessibilityRole="button"
+          accessibilityLabel={continueLabel}
           onPress={onContinue}
-          style={{ marginTop: 18 }}
+          style={{
+            minHeight: 40,
+            marginTop: 18,
+            alignSelf: "flex-start",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 2,
+          }}
         >
-          <Text style={common.link}>{continueLabel}</Text>
+          {continueLabel.startsWith("Back") && (
+            <Ionicons name="chevron-back" size={20} color={colors.brandDark} />
+          )}
+          <Text
+            style={
+              continueLabel.startsWith("Back")
+                ? { color: colors.brandDark, fontSize: 15, fontWeight: "600" }
+                : common.link
+            }
+          >
+            {continueLabel.startsWith("Back") ? "Back" : continueLabel}
+          </Text>
         </Pressable>
       )}
     </View>

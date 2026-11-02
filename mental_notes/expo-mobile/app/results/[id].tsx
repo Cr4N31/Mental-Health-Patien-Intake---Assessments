@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../src/components/RequireAuth";
+import { BackLink } from "../../src/components/BackLink";
 import api, { errorMessage } from "../../src/api/client";
 import {
   changeText,
@@ -74,9 +75,7 @@ function ResultContent() {
         <Text accessibilityRole="alert" style={common.error}>
           {error}
         </Text>
-        <Link href="/screens/home" style={[common.link, { marginTop: 18 }]}>
-          Back to dashboard
-        </Link>
+        <BackLink href="/screens/home" style={{ marginTop: 18 }} />
       </View>
     );
   if (!assessment)
@@ -214,9 +213,7 @@ function ResultContent() {
           marginTop: 25,
         }}
       >
-        <Link href="/screens/home" style={common.link}>
-          Back to dashboard
-        </Link>
+        <BackLink href="/screens/home" />
         <Link href="/screens/reflections/history" style={common.link}>
           View history
         </Link>

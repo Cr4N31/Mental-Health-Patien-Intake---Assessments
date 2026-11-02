@@ -1,6 +1,6 @@
 import { Image, ImageStyle, StyleProp } from "react-native";
 
-const logo = require("../../assets/pranatix-logo.png");
+const logo = require("../../assets/logo_x.png");
 
 export function BrandLogo({ style }: { style?: StyleProp<ImageStyle> }) {
   return (
@@ -8,7 +8,7 @@ export function BrandLogo({ style }: { style?: StyleProp<ImageStyle> }) {
       source={logo}
       accessibilityLabel="PranatiX"
       resizeMode="contain"
-      style={[{ width: 132, height: 34 }, style]}
+      style={[{ width: 36, height: 36 }, style]}
     />
   );
 }

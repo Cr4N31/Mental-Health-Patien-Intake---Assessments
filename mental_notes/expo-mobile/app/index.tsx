@@ -1,6 +1,7 @@
 import { Link, Redirect } from "expo-router";
 import { ScrollView, Text, View } from "react-native";
 import { useAuth } from "../src/auth/AuthContext";
+import { BrandLogo } from "../src/components/BrandLogo";
 import { colors, common } from "../src/theme/styles";
 
 export default function LandingScreen() {
@@ -11,11 +12,7 @@ export default function LandingScreen() {
       style={common.screen}
       contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 36 }}
     >
-      <Text
-        style={{ color: colors.brandDark, fontSize: 22, fontWeight: "700" }}
-      >
-        Mental Notes
-      </Text>
+      <BrandLogo />
       <View style={{ marginTop: 64 }}>
         <Text style={[common.title, { fontSize: 38, lineHeight: 45 }]}>
           Check in with how you are feeling

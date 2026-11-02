@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Link, useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import {
   ActivityIndicator,
   Alert,
@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../../src/components/RequireAuth";
+import { BackLink } from "../../../src/components/BackLink";
 import {
   alliesApi,
   ConsultRequest,
@@ -70,9 +71,7 @@ function RequestsContent() {
         paddingBottom: 48,
       }}
     >
-      <Link href="/screens/allies" style={common.link}>
-        Back
-      </Link>
+      <BackLink href="/screens/allies" />
       <Text style={[common.title, { marginTop: 18 }]}>My requests</Text>
 
       {!!error && (

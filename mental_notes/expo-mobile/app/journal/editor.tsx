@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   ActivityIndicator,
   Alert,
@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../src/components/RequireAuth";
+import { BackLink } from "../../src/components/BackLink";
 import { SupportCard } from "../../src/components/SupportCard";
 import { reflectionsApi, SafetyLevel } from "../../src/api/reflection";
 import { errorMessage } from "../../src/api/client";
@@ -125,9 +126,7 @@ function EditorContent() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Link href="/journal" style={common.link}>
-          Back
-        </Link>
+        <BackLink href="/journal" />
         <Text style={[common.title, { marginTop: 18 }]}>
           {editing ? "Edit entry" : "New entry"}
         </Text>

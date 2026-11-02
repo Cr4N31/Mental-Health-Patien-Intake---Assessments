@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../src/components/RequireAuth";
+import { BackLink } from "../../src/components/BackLink";
 import { reflectionsApi } from "../../src/api/reflection";
 import { errorMessage } from "../../src/api/client";
 import { JournalEntry, shortDate } from "../../src/lib/reflections";
@@ -42,9 +43,7 @@ function JournalContent() {
         paddingBottom: 48,
       }}
     >
-      <Link href="/screens/reflections/reflections" style={common.link}>
-        Back
-      </Link>
+      <BackLink href="/screens/reflections/reflections" />
       <Text style={[common.title, { marginTop: 18 }]}>Journal</Text>
       <Text style={common.subtitle}>
         Write whatever is on your mind. Only you can see it.

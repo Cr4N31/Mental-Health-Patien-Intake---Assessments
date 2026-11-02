@@ -1,9 +1,9 @@
 export const MOODS = [
-  { score: 1, icon: "☹", label: "Low" },
-  { score: 2, icon: "◔", label: "Heavy" },
-  { score: 3, icon: "◑", label: "Okay" },
-  { score: 4, icon: "◕", label: "Good" },
-  { score: 5, icon: "☺", label: "Great" },
+  { score: 1, icon: "emoticon-sad-outline", label: "Low" },
+  { score: 2, icon: "emoticon-confused-outline", label: "Heavy" },
+  { score: 3, icon: "emoticon-neutral-outline", label: "Okay" },
+  { score: 4, icon: "emoticon-happy-outline", label: "Good" },
+  { score: 5, icon: "emoticon-excited-outline", label: "Great" },
 ] as const;
 
 export const EMOTIONS = ["calm", "grateful", "hopeful", "happy", "tired", "stressed", "anxious", "sad", "frustrated", "overwhelmed"] as const;

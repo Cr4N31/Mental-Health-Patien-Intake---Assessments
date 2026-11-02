@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../../src/components/RequireAuth";
+import { BackLink } from "../../../src/components/BackLink";
 import { SupportCard } from "../../../src/components/SupportCard";
 import { alliesApi, Professional } from "../../../src/api/allies";
 import type { SafetyLevel } from "../../../src/api/reflection";
@@ -85,9 +86,7 @@ function ProfileContent() {
         }}
         keyboardShouldPersistTaps="handled"
       >
-        <Link href="/screens/allies" style={common.link}>
-          Back
-        </Link>
+        <BackLink href="/screens/allies" />
 
         {!!loadError && (
           <Text

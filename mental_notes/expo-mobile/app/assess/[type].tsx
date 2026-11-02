@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import {
   ActivityIndicator,
   Pressable,
@@ -8,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../src/components/RequireAuth";
+import { BackLink } from "../../src/components/BackLink";
 import api, { errorMessage } from "../../src/api/client";
 import { FORM_INFO, FORM_TYPES, FormType } from "../../src/lib/assessmentInfo";
 import { colors, common } from "../../src/theme/styles";
@@ -68,9 +70,7 @@ function AssessmentContent() {
         <Text accessibilityRole="alert" style={common.error}>
           {error}
         </Text>
-        <Link href="/screens/home" style={[common.link, { marginTop: 20 }]}>
-          Back to dashboard
-        </Link>
+        <BackLink href="/screens/home" style={{ marginTop: 20 }} />
       </View>
     );
   if (!form)
@@ -216,15 +216,21 @@ function AssessmentContent() {
               disabled={index === 0 || busy}
               onPress={() => setIndex((value) => value - 1)}
               style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 2,
                 borderWidth: 1,
                 borderColor: colors.line,
-                borderRadius: 8,
-                paddingHorizontal: 20,
-                paddingVertical: 12,
+                borderRadius: 10,
+                paddingHorizontal: 14,
+                paddingVertical: 9,
                 opacity: index === 0 || busy ? 0.45 : 1,
               }}
             >
-              <Text style={{ color: colors.ink }}>Back</Text>
+              <Ionicons name="chevron-back" size={18} color={colors.brandDark} />
+              <Text style={{ color: colors.brandDark, fontWeight: "600" }}>
+                Back
+              </Text>
             </Pressable>
             {last ? (
               <Pressable

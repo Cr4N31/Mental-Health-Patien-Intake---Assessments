@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { RequireAuth } from "../../../src/components/RequireAuth";
+import { BackLink } from "../../../src/components/BackLink";
 import { alliesApi, Filters, Professional } from "../../../src/api/allies";
 import { errorMessage } from "../../../src/api/client";
 import { colors, common } from "../../../src/theme/styles";
@@ -93,9 +94,7 @@ function AlliesContent() {
       }}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Link href="/screens/home" style={common.link}>
-          Back
-        </Link>
+        <BackLink href="/screens/home" />
         <Link href="/screens/allies/requests" style={common.link}>
           My requests
         </Link>

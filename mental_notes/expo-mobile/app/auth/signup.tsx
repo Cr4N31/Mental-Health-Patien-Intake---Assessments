@@ -11,11 +11,13 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "../../src/auth/AuthContext";
+import { BrandLogo } from "../../src/components/BrandLogo";
+import { BackLink } from "../../src/components/BackLink";
 import { errorMessage } from "../../src/api/client";
 import { colors, common } from "../../src/theme/styles";
 
 const consentCopy =
-  "I understand that Mental Notes stores my answers and results so I can see my history. It is a screening tool, not a diagnosis, and it does not replace advice from a qualified professional.";
+  "I understand that PranatiX stores my answers and results so I can see my history. It is a screening tool, not a diagnosis, and it does not replace advice from a qualified professional.";
 
 export default function SignupScreen() {
   const { user, loading, register } = useAuth();
@@ -73,6 +75,7 @@ export default function SignupScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={{ width: "100%", maxWidth: 460, alignSelf: "center" }}>
+          <BrandLogo />
           <Text style={common.title}>Create your account</Text>
           <Text style={common.subtitle}>
             Take private check-ins and track how you are doing over time.
@@ -190,9 +193,7 @@ export default function SignupScreen() {
               Log in
             </Link>
           </View>
-          <Link href="/" style={[common.link, { marginTop: 26 }]}>
-            Back to home
-          </Link>
+          <BackLink href="/" style={{ marginTop: 18 }} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

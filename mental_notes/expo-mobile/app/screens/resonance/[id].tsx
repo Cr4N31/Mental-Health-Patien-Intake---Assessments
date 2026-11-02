@@ -21,6 +21,7 @@ import {
 import type { SafetyLevel } from "../../../src/api/reflection";
 import { CommentRow } from "../../../src/components/resonance/CommentRow";
 import { PostCard } from "../../../src/components/resonance/PostCard";
+import { BackLink } from "../../../src/components/BackLink";
 import { SupportCard } from "../../../src/components/SupportCard";
 import { colors, common } from "../../../src/theme/styles";
 
@@ -232,9 +233,7 @@ export default function PostDetail() {
         <Text style={{ color: colors.ink, fontSize: 18, fontWeight: "700" }}>
           {loadError || "This post is not available."}
         </Text>
-        <Pressable onPress={() => router.back()} style={{ marginTop: 14 }}>
-          <Text style={common.link}>Back to Resonance</Text>
-        </Pressable>
+        <BackLink href="/screens/resonance" style={{ marginTop: 14 }} />
       </View>
     );
   }

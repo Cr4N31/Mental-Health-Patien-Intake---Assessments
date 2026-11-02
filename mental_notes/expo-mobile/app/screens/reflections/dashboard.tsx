@@ -20,6 +20,7 @@ import {
 } from "../../../src/lib/assessmentInfo";
 import { colors, common } from "../../../src/theme/styles";
 import { ProgressChart } from "../../../src/components/ProgressChart";
+import { BrandLogo } from "../../../src/components/BrandLogo";
 
 type Assessment = {
   _id: string;
@@ -41,6 +42,7 @@ function DashboardContent() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [history, setHistory] = useState<Assessment[] | null>(null);
   const [error, setError] = useState("");
+  const [historyError, setHistoryError] = useState("");
   useEffect(() => {
     api
       .get<DashboardData>("/assessments/latest")
@@ -48,8 +50,11 @@ function DashboardContent() {
       .catch((err) => setError(errorMessage(err)));
     api
       .get<Assessment[]>("/assessments", { params: { limit: 100 } })
-      .then((res) => setHistory(res.data))
-      .catch(() => setHistory([]));
+      .then((res) => {
+        setHistory(res.data);
+        setHistoryError("");
+      })
+      .catch((err) => setHistoryError(errorMessage(err)));
   }, []);
   async function signOut() {
     await logout();
@@ -71,11 +76,7 @@ function DashboardContent() {
           alignItems: "center",
         }}
       >
-        <Text
-          style={{ color: colors.brandDark, fontSize: 21, fontWeight: "700" }}
-        >
-          Mental Notes
-        </Text>
+        <BrandLogo />
         <View style={{ flexDirection: "row", gap: 14 }}>
           <Link href="/screens/reflections/reflections" style={common.link}>
             Reflect
@@ -115,6 +116,14 @@ function DashboardContent() {
           style={[common.error, { marginTop: 18 }]}
         >
           {error}
+        </Text>
+      )}
+      {!!historyError && (
+        <Text
+          accessibilityRole="alert"
+          style={[common.error, { marginTop: 18 }]}
+        >
+          {historyError}
         </Text>
       )}
       {!data && !error && (

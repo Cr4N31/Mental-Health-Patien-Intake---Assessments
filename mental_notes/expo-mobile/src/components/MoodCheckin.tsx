@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { reflectionsApi, SafetyLevel } from "../api/reflection";
 import { errorMessage } from "../api/client";
 import { EMOTIONS, MOODS, Mood } from "../lib/reflections";
@@ -114,7 +115,7 @@ export function MoodCheckIn({ onSaved }: Props) {
               accessibilityLabel={mood.label}
               accessibilityState={{ selected }}
               onPress={() => setScore(mood.score)}
-              style={{
+              style={({ pressed }) => ({
                 flex: 1,
                 marginHorizontal: 3,
                 alignItems: "center",
@@ -123,11 +124,14 @@ export function MoodCheckIn({ onSaved }: Props) {
                 borderWidth: 1,
                 borderColor: selected ? colors.brand : colors.line,
                 backgroundColor: selected ? colors.brandSoft : colors.paper,
-              }}
+                transform: [{ scale: pressed ? 0.94 : selected ? 1.04 : 1 }],
+              })}
             >
-              <Text style={{ fontSize: 26, color: colors.ink }}>
-                {mood.icon}
-              </Text>
+              <MaterialCommunityIcons
+                name={mood.icon}
+                size={28}
+                color={selected ? colors.brandDark : colors.muted}
+              />
               <Text
                 style={{
                   fontSize: 12,
