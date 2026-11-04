@@ -72,6 +72,11 @@ function SettingsContent() {
     }
   }
 
+  async function signOut() {
+    await logout();
+    router.replace("/auth/login");
+  }
+
   function confirmDeleteAccount() {
     if (!password) {
       setAccountError("Enter your password to continue.");
@@ -132,6 +137,18 @@ function SettingsContent() {
         </Text>
 
         <ReminderCard />
+
+        <Pressable
+          accessibilityRole="button"
+          onPress={signOut}
+          style={{
+            alignSelf: "flex-start",
+            marginTop: 18,
+            paddingVertical: 8,
+          }}
+        >
+          <Text style={{ color: colors.risk, fontWeight: "600" }}>Log out</Text>
+        </Pressable>
 
         {/* Admin tools */}
         {(user?.role === "admin" || user?.role === "moderator") && (

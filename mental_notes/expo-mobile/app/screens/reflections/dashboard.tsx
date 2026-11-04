@@ -37,7 +37,7 @@ type Summary = {
 type DashboardData = Record<FormType, Summary>;
 
 function DashboardContent() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const [data, setData] = useState<DashboardData | null>(null);
   const [history, setHistory] = useState<Assessment[] | null>(null);
@@ -56,10 +56,6 @@ function DashboardContent() {
       })
       .catch((err) => setHistoryError(errorMessage(err)));
   }, []);
-  async function signOut() {
-    await logout();
-    router.replace("/auth/login");
-  }
   return (
     <ScrollView
       style={common.screen}
@@ -87,13 +83,6 @@ function DashboardContent() {
           <Link href="/screens/profile" style={common.link}>
             Profile
           </Link>
-          <Pressable onPress={signOut}>
-            <Text
-              style={{ color: colors.muted, textDecorationLine: "underline" }}
-            >
-              Log out
-            </Text>
-          </Pressable>
         </View>
       </View>
       {user && !user.emailVerified && (
