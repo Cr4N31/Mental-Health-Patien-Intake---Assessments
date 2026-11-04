@@ -6,8 +6,17 @@ import { RequireAuth } from "../../../src/components/RequireAuth";
 import { BackLink } from "../../../src/components/BackLink";
 import { RequireStaff } from "../../../src/components/RequireStaff";
 import { useAuth } from "../../../src/auth/AuthContext";
-import { adminApi, Counts, Stats } from "../../../src/api/admin";
+import {
+  adminApi,
+  Analytics,
+  AnalyticsRange,
+  Counts,
+  RegisteredAccount,
+  Stats,
+} from "../../../src/api/admin";
+import { AdminTrendChart } from "../../../src/components/AdminTrendChart";
 import { errorMessage } from "../../../src/api/client";
+import { formatDate } from "../../../src/lib/assessmentInfo";
 import { colors, common } from "../../../src/theme/styles";
 
 const n = (c: Counts, k: string) => c[k] ?? 0;
@@ -73,6 +82,9 @@ function AdminContent() {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
   const [stats, setStats] = useState<Stats | null>(null);
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [accounts, setAccounts] = useState<RegisteredAccount[] | null>(null);
+  const [range, setRange] = useState<AnalyticsRange>("24h");
   const [error, setError] = useState("");
 
   const load = useCallback(() => {
@@ -81,7 +93,15 @@ function AdminContent() {
       .stats()
       .then(setStats)
       .catch((e) => setError(errorMessage(e)));
-  }, [isAdmin]);
+    adminApi
+      .analytics(range)
+      .then(setAnalytics)
+      .catch((e) => setError(errorMessage(e)));
+    adminApi
+      .users()
+      .then(setAccounts)
+      .catch((e) => setError(errorMessage(e)));
+  }, [isAdmin, range]);
 
   useFocusEffect(load);
 
@@ -129,6 +149,47 @@ function AdminContent() {
         </View>
       )}
 
+      {isAdmin && analytics && (
+        <>
+          <AdminTrendChart
+            title="Sign-ups and logins"
+            description="Successful logins recorded from this release onward."
+            buckets={analytics.buckets}
+            range={range}
+            onRangeChange={setRange}
+            series={[
+              { key: "signups", label: "New accounts", color: colors.brand },
+              { key: "logins", label: "Logins", color: "#5575A6" },
+            ]}
+          />
+          <AdminTrendChart
+            title="Consult request outcomes"
+            description="Requests created in this period, grouped by their current status."
+            buckets={analytics.buckets}
+            range={range}
+            onRangeChange={setRange}
+            series={[
+              { key: "consultPending", label: "Pending", color: "#D39B32" },
+              { key: "consultAccepted", label: "Accepted", color: colors.brand },
+              { key: "consultDeclined", label: "Declined", color: colors.risk },
+              { key: "consultCancelled", label: "Cancelled", color: colors.muted },
+            ]}
+          />
+          <AdminTrendChart
+            title="Activity log"
+            description="Moderation approvals and deletions over time."
+            buckets={analytics.buckets}
+            range={range}
+            onRangeChange={setRange}
+            series={[
+              { key: "activity", label: "Actions", color: "#5575A6" },
+              { key: "approved", label: "Approved", color: colors.brand },
+              { key: "deleted", label: "Deleted", color: colors.risk },
+            ]}
+          />
+        </>
+      )}
+
       <View style={[common.card, { marginTop: 22 }]}>
         <Title>Review queue</Title>
         {isAdmin && stats && (
@@ -168,6 +229,37 @@ function AdminContent() {
                 value={stats.users.last7Days}
               />
             </View>
+          </View>
+
+          <View style={common.card}>
+            <Title>Registered accounts</Title>
+            <Text style={[common.subtitle, { fontSize: 14 }]}>
+              {stats.users.total} accounts total · showing the latest 50
+            </Text>
+            {!!accounts &&
+              accounts.map((account) => (
+                <View
+                  key={account._id}
+                  style={{
+                    borderTopWidth: 1,
+                    borderTopColor: colors.line,
+                    paddingVertical: 11,
+                  }}
+                >
+                  <Text style={{ color: colors.ink, fontWeight: "600" }}>
+                    {account.name}
+                  </Text>
+                  <Text style={{ color: colors.muted, fontSize: 13, marginTop: 3 }}>
+                    {account.email} · {account.role}
+                  </Text>
+                  <Text style={{ color: colors.muted, fontSize: 12, marginTop: 3 }}>
+                    Joined {formatDate(account.createdAt)}
+                  </Text>
+                </View>
+              ))}
+            {accounts?.length === 0 && (
+              <Text style={common.subtitle}>No accounts found.</Text>
+            )}
           </View>
 
           <View style={common.card}>

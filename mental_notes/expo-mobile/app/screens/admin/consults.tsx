@@ -4,13 +4,21 @@ import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { RequireAuth } from "../../../src/components/RequireAuth";
 import { BackLink } from "../../../src/components/BackLink";
 import { RequireStaff } from "../../../src/components/RequireStaff";
-import { adminApi, ConsultRow } from "../../../src/api/admin";
+import {
+  adminApi,
+  Analytics,
+  AnalyticsRange,
+  ConsultRow,
+} from "../../../src/api/admin";
+import { AdminTrendChart } from "../../../src/components/AdminTrendChart";
 import { errorMessage } from "../../../src/api/client";
 import { formatDate } from "../../../src/lib/assessmentInfo";
 import { colors, common } from "../../../src/theme/styles";
 
 function ConsultsContent() {
   const [rows, setRows] = useState<ConsultRow[] | null>(null);
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
+  const [range, setRange] = useState<AnalyticsRange>("24h");
   const [error, setError] = useState("");
 
   const load = useCallback(() => {
@@ -18,7 +26,11 @@ function ConsultsContent() {
       .consults()
       .then(setRows)
       .catch((e) => setError(errorMessage(e)));
-  }, []);
+    adminApi
+      .analytics(range)
+      .then(setAnalytics)
+      .catch((e) => setError(errorMessage(e)));
+  }, [range]);
 
   useFocusEffect(load);
 
@@ -32,6 +44,21 @@ function ConsultsContent() {
       <Text style={common.subtitle}>
         Names and messages are private, so only the basics show here.
       </Text>
+      {analytics && (
+        <AdminTrendChart
+          title="Requests by current status"
+          description="Requests created in the selected period."
+          buckets={analytics.buckets}
+          range={range}
+          onRangeChange={setRange}
+          series={[
+            { key: "consultPending", label: "Pending", color: "#D39B32" },
+            { key: "consultAccepted", label: "Accepted", color: colors.brand },
+            { key: "consultDeclined", label: "Declined", color: colors.risk },
+            { key: "consultCancelled", label: "Cancelled", color: colors.muted },
+          ]}
+        />
+      )}
       {!!error && (
         <Text style={[common.error, { marginTop: 14 }]}>{error}</Text>
       )}

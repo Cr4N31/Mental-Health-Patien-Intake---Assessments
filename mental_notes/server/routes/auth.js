@@ -9,6 +9,7 @@ import Assessment from "../models/Assessment.js";
 import JournalEntry from "../models/JournalEntry.js";
 import MoodCheckin from "../models/MoodCheckin.js";
 import ConsultRequest from "../models/ConsultRequest.js";
+import LoginEvent from "../models/LoginEvent.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendMail } from "../utils/mailer.js";
@@ -244,6 +245,7 @@ router.post(
     if (!user || !ok) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
+    await LoginEvent.create({});
     res.json({ token: createAuthToken(user._id), user: publicUser(user) });
   }),
 );
@@ -299,6 +301,7 @@ router.post(
     if (!user || !ok || !isStaff) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
+    await LoginEvent.create({});
     res.json({
       token: createAuthToken(user._id, { staff: true }),
       user: { ...publicUser(user), staffSession: true },
@@ -325,6 +328,7 @@ router.post(
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    await LoginEvent.create({});
     setAuthCookie(res, user._id);
     res.json(publicUser(user));
   }),

@@ -6,6 +6,7 @@ import ConsultRequest from "../models/ConsultRequest.js";
 import Professional from "../models/Professional.js"; // registers the model for populate
 import AdminAction from "../models/AdminAction.js";
 import User from "../models/User.js";
+import LoginEvent from "../models/LoginEvent.js";
 import { requireAuth } from "../middleware/auth.js";
 import { requireRole } from "../middleware/requireRole.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -16,6 +17,13 @@ router.use(requireAuth);
 const staff = requireRole("moderator", "admin");
 const adminOnly = requireRole("admin");
 const REVIEW = ["held", "hidden"];
+const ANALYTICS_RANGES = {
+  "1h": { unit: "minute", binSize: 5, count: 12 },
+  "5h": { unit: "minute", binSize: 15, count: 20 },
+  "24h": { unit: "hour", binSize: 1, count: 24 },
+  "3m": { unit: "day", binSize: 1, count: 90 },
+  "12m": { unit: "month", binSize: 1, count: 12 },
+};
 
 function validId(req, res, next) {
   if (!mongoose.isValidObjectId(req.params.id))
@@ -164,6 +172,115 @@ router.get(
         (comments.held || 0) +
         (comments.hidden || 0),
     });
+  }),
+);
+
+router.get(
+  "/analytics",
+  adminOnly,
+  asyncHandler(async (req, res) => {
+    const range = ANALYTICS_RANGES[req.query.range];
+    if (!range)
+      return res.status(400).json({ message: "Choose a valid analytics range" });
+
+    const now = new Date();
+    let start;
+    let end;
+    if (range.unit === "month") {
+      end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1));
+      start = new Date(
+        Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - range.count + 1),
+      );
+    } else {
+      const duration = range.binSize * (range.unit === "minute" ? 60_000 : 3_600_000);
+      end = new Date(Math.floor(now.getTime() / duration) * duration + duration);
+      start = new Date(end.getTime() - range.count * duration);
+      if (range.unit === "day") {
+        end.setUTCHours(0, 0, 0, 0);
+        end.setUTCDate(end.getUTCDate() + 1);
+        start = new Date(end);
+        start.setUTCDate(start.getUTCDate() - range.count);
+      }
+    }
+
+    const match = { createdAt: { $gte: start, $lt: end } };
+    const bucket = {
+      $dateTrunc: {
+        date: "$createdAt",
+        unit: range.unit,
+        binSize: range.binSize,
+        timezone: "UTC",
+      },
+    };
+    const grouped = (Model, extraGroup = {}) =>
+      Model.aggregate([
+        { $match: match },
+        { $group: { _id: { date: bucket, ...extraGroup }, count: { $sum: 1 } } },
+      ]);
+
+    const [signups, logins, activity, consults] = await Promise.all([
+      grouped(User),
+      grouped(LoginEvent),
+      grouped(AdminAction, { action: "$action" }),
+      grouped(ConsultRequest, { status: "$status" }),
+    ]);
+
+    const buckets = Array.from({ length: range.count }, (_, index) => {
+      const date = new Date(start);
+      if (range.unit === "month") date.setUTCMonth(date.getUTCMonth() + index);
+      else if (range.unit === "day") date.setUTCDate(date.getUTCDate() + index);
+      else date.setTime(date.getTime() + index * range.binSize *
+        (range.unit === "minute" ? 60_000 : 3_600_000));
+      return {
+        date: date.toISOString(),
+        signups: 0,
+        logins: 0,
+        activity: 0,
+        approved: 0,
+        deleted: 0,
+        consultPending: 0,
+        consultAccepted: 0,
+        consultDeclined: 0,
+        consultCancelled: 0,
+      };
+    });
+    const bucketByDate = new Map(buckets.map((item) => [item.date, item]));
+    const dateKey = (date) => new Date(date).toISOString();
+    for (const row of signups) {
+      const item = bucketByDate.get(dateKey(row._id.date));
+      if (item) item.signups = row.count;
+    }
+    for (const row of logins) {
+      const item = bucketByDate.get(dateKey(row._id.date));
+      if (item) item.logins = row.count;
+    }
+    for (const row of activity) {
+      const item = bucketByDate.get(dateKey(row._id.date));
+      if (!item) continue;
+      item.activity += row.count;
+      if (row._id.action === "approve") item.approved = row.count;
+      if (row._id.action === "delete") item.deleted = row.count;
+    }
+    for (const row of consults) {
+      const item = bucketByDate.get(dateKey(row._id.date));
+      const key = `consult${row._id.status[0].toUpperCase()}${row._id.status.slice(1)}`;
+      if (item && key in item) item[key] = row.count;
+    }
+
+    res.json({ range: req.query.range, buckets });
+  }),
+);
+
+router.get(
+  "/users",
+  adminOnly,
+  asyncHandler(async (req, res) => {
+    const users = await User.find()
+      .select("name email role createdAt")
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .lean();
+    res.json(users);
   }),
 );
 

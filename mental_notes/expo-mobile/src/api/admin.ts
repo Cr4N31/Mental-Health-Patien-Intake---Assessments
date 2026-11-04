@@ -19,6 +19,30 @@ export type Stats = {
   consults: Counts;
   needsReview: number;
 };
+export type AnalyticsRange = "1h" | "5h" | "24h" | "3m" | "12m";
+export type AnalyticsBucket = {
+  date: string;
+  signups: number;
+  logins: number;
+  activity: number;
+  approved: number;
+  deleted: number;
+  consultPending: number;
+  consultAccepted: number;
+  consultDeclined: number;
+  consultCancelled: number;
+};
+export type Analytics = {
+  range: AnalyticsRange;
+  buckets: AnalyticsBucket[];
+};
+export type RegisteredAccount = {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: string;
+};
 export type ConsultRow = {
   _id: string;
   professional: string;
@@ -44,4 +68,8 @@ export const adminApi = {
   stats: () => api.get<Stats>("/admin/stats").then((r) => r.data),
   consults: () => api.get<ConsultRow[]>("/admin/consults").then((r) => r.data),
   audit: () => api.get<AuditRow[]>("/admin/audit").then((r) => r.data),
+  analytics: (range: AnalyticsRange) =>
+    api.get<Analytics>("/admin/analytics", { params: { range } }).then((r) => r.data),
+  users: () =>
+    api.get<RegisteredAccount[]>("/admin/users").then((r) => r.data),
 };
