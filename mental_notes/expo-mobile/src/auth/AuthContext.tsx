@@ -16,6 +16,7 @@ export type User = {
   email: string;
   emailVerified: boolean;
   role?: Role;
+  staffSession?: boolean;
 };
 
 type AuthContextValue = {
@@ -28,6 +29,7 @@ type AuthContextValue = {
     password: string;
     consent: true;
   }) => Promise<void>;
+  staffLogin: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -50,6 +52,15 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
   const login = useCallback(async (email: string, password: string) => {
     const response = await api.post<{ token: string; user: User }>(
       "/auth/mobile/session",
+      { email, password },
+    );
+    await SecureStore.setItemAsync("mental-notes-session", response.data.token);
+    setUser(response.data.user);
+  }, []);
+
+  const staffLogin = useCallback(async (email: string, password: string) => {
+    const response = await api.post<{ token: string; user: User }>(
+      "/auth/staff/session",
       { email, password },
     );
     await SecureStore.setItemAsync("mental-notes-session", response.data.token);
@@ -83,8 +94,8 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
   }, []);
 
   const value = useMemo(
-    () => ({ user, loading, login, register, logout }),
-    [user, loading, login, register, logout],
+    () => ({ user, loading, login, register, staffLogin, logout }),
+    [user, loading, login, register, staffLogin, logout],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

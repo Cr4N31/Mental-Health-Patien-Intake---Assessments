@@ -26,6 +26,13 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const staffLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const passwordSchema = z
   .string()
   .min(10, "Password must be at least 10 characters")
@@ -80,10 +87,12 @@ function setAuthCookie(res, userId) {
   res.cookie("token", token, { ...cookieOptions, maxAge: SEVEN_DAYS });
 }
 
-function createAuthToken(userId) {
-  return jwt.sign({ sub: String(userId) }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+function createAuthToken(userId, { staff = false } = {}) {
+  return jwt.sign(
+    staff ? { sub: String(userId), scope: "staff" } : { sub: String(userId) },
+    process.env.JWT_SECRET,
+    { expiresIn: staff ? "4h" : "7d" },
+  );
 }
 
 function publicUser(u) {
@@ -263,6 +272,30 @@ router.post(
 );
 
 router.post(
+  "/staff/session",
+  staffLimiter,
+  asyncHandler(async (req, res) => {
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res
+        .status(400)
+        .json({ message: "Enter a valid email and password" });
+    }
+    const { email, password } = parsed.data;
+    const user = await User.findOne({ email }).select("+passwordHash");
+    const ok = await bcrypt.compare(password, user?.passwordHash ?? DUMMY_HASH);
+    const isStaff = !!user && ["moderator", "admin"].includes(user.role);
+    if (!user || !ok || !isStaff) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    res.json({
+      token: createAuthToken(user._id, { staff: true }),
+      user: { ...publicUser(user), staffSession: true },
+    });
+  }),
+);
+
+router.post(
   "/login",
   authLimiter,
   asyncHandler(async (req, res) => {
@@ -300,7 +333,7 @@ router.get(
       res.clearCookie("token", cookieOptions);
       return res.status(401).json({ message: "Not authenticated" });
     }
-    res.json(publicUser(user));
+    res.json({ ...publicUser(user), staffSession: req.tokenScope === "staff" });
   }),
 );
 

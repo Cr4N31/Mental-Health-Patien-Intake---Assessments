@@ -154,6 +154,9 @@ export default function LoginScreen() {
               Create an account
             </Link>
           </View>
+          <Link href={"/auth/staff" as never} style={common.link}>
+            Staff sign in
+          </Link>
           <BackLink href="/" style={{ marginTop: 18 }} />
         </View>
       </ScrollView>

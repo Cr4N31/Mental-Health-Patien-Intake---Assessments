@@ -1,7 +1,6 @@
 import { Redirect } from "expo-router";
 import { useAuth } from "../auth/AuthContext";
 
-// Wrap inside RequireAuth. The server enforces roles too; this only hides screens.
 export function RequireStaff({
   children,
   adminOnly,
@@ -10,5 +9,6 @@ export function RequireStaff({
   const ok =
     user?.role === "admin" || (!adminOnly && user?.role === "moderator");
   if (!ok) return <Redirect href="/screens/home" />;
+  if (!user?.staffSession) return <Redirect href={"/auth/staff" as never} />;
   return children;
 }
