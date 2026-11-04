@@ -31,6 +31,7 @@ export async function requireAuth(req, res, next) {
     }
 
     req.userId = payload.sub;
+    req.tokenScope = payload.scope;
     next();
   } catch (err) {
     next(err);
