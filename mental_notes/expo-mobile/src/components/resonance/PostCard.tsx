@@ -22,7 +22,7 @@ export function PostCard({ post, onReact, onPress, onMenu }: Props) {
         }}
       >
         <Text style={{ color: colors.ink, fontWeight: "700" }}>
-          {post.pseudonym}
+          {post.displayName}
           {post.isMine ? " (you)" : ""}
         </Text>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>

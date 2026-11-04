@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const ResonancePostSchema = new mongoose.Schema({
   authorKey: { type: String, required: true },
+  anonymous: { type: Boolean, default: true },
+  displayName: { type: String, maxlength: 100 },
   body: { type: String, required: true, maxlength: 1000 },
   status: {
     type: String,

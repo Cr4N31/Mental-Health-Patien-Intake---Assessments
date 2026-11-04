@@ -4,7 +4,7 @@ import type { SafetyLevel } from "./reflection";
 export type ResonancePost = {
   _id: string;
   body: string;
-  pseudonym: string;
+  displayName: string;
   isMine: boolean;
   reactionCount: number;
   reacted: boolean;
@@ -44,9 +44,9 @@ export const resonanceApi = {
       .then((res) => res.data),
   get: (id: string) =>
     api.get<ResonancePost>(`/resonance/posts/${id}`).then((res) => res.data),
-  create: (body: string) =>
+  create: (body: string, anonymous = true) =>
     api
-      .post<CreatePostResult>("/resonance/posts", { body })
+      .post<CreatePostResult>("/resonance/posts", { body, anonymous })
       .then((res) => res.data),
   remove: (id: string) =>
     api.delete(`/resonance/posts/${id}`).then((res) => res.data),

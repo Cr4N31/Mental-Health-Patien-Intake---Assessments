@@ -143,8 +143,8 @@ export default function ResonanceFeed() {
         ListHeaderComponent={
           <View style={{ marginTop: 6 }}>
             <Text style={common.subtitle}>
-              A quiet place to share how you are really doing. Everyone here is
-              anonymous.
+              A quiet place to share how you are really doing. Choose whether to
+              post anonymously or with your profile name.
             </Text>
             {!!error && (
               <Text style={[common.error, { marginTop: 12 }]}>{error}</Text>

@@ -248,7 +248,7 @@ function HomeContent() {
         <View style={common.card}>
           <CardTitle icon="chatbubble-ellipses-outline">Resonance</CardTitle>
           <Text style={[common.subtitle, { fontSize: 15 }]}>
-            An anonymous space to share and be heard.
+            A space to share anonymously or with your profile name.
           </Text>
           {post && (
             <Link href={`/screens/resonance/${post._id}`} asChild>
@@ -267,7 +267,7 @@ function HomeContent() {
               >
                 <View style={{ flex: 1 }}>
                   <Text style={{ color: colors.muted, fontSize: 13 }}>
-                    {post.pseudonym}
+                    {post.displayName}
                   </Text>
                   <Text
                     style={{ color: colors.ink, lineHeight: 22, marginTop: 4 }}

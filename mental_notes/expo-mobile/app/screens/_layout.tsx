@@ -160,15 +160,8 @@ export default function ScreensLayout() {
       <Tabs.Screen
         name="account"
         options={{
-          title: "Settings",
-          href: "/screens/account",
-          tabBarIcon: ({ focused, size }) => (
-            <TabIcon
-              name={focused ? "settings" : "settings-outline"}
-              size={size}
-              focused={focused}
-            />
-          ),
+          tabBarButton: () => null,
+          tabBarItemStyle: { display: "none" },
         }}
       />
 

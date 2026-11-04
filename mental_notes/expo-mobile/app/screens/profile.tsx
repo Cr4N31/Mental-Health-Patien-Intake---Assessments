@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { RequireAuth } from "../../src/components/RequireAuth";
 import { FadeIn } from "../../src/components/FadeIn";
 import { useAuth } from "../../src/auth/AuthContext";
@@ -53,10 +53,14 @@ function ProfileRow({
 }
 
 function ProfileContent() {
-  const { user } = useAuth();
+  const { user, updateUsername } = useAuth();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [username, setUsername] = useState(user?.username ?? "");
+  const [usernameMessage, setUsernameMessage] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [savingUsername, setSavingUsername] = useState(false);
   const initials =
     user?.name
       .split(/\s+/)
@@ -76,6 +80,24 @@ function ProfileContent() {
       setError(errorMessage(err));
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function saveUsername() {
+    setSavingUsername(true);
+    setUsernameError("");
+    setUsernameMessage("");
+    try {
+      await updateUsername(username.trim());
+      setUsernameMessage(
+        username.trim()
+          ? "Username saved."
+          : "Username cleared. Your profile name will be used.",
+      );
+    } catch (err) {
+      setUsernameError(errorMessage(err));
+    } finally {
+      setSavingUsername(false);
     }
   }
 
@@ -160,6 +182,45 @@ function ProfileContent() {
           <Text style={{ color: colors.muted, fontSize: 14, marginTop: 4 }}>
             {user?.email}
           </Text>
+          <View style={{ width: "85%", marginTop: 18 }}>
+            <Text style={[common.label, { textAlign: "center" }]}>
+              Resonance username (optional)
+            </Text>
+            <TextInput
+              accessibilityLabel="Resonance username"
+              autoCapitalize="none"
+              autoCorrect={false}
+              maxLength={24}
+              value={username}
+              onChangeText={setUsername}
+              placeholder="Letters, numbers, underscores"
+              placeholderTextColor={colors.muted}
+              style={[common.input, { marginTop: 7, textAlign: "center" }]}
+            />
+            <Text style={{ color: colors.muted, fontSize: 12, marginTop: 5, textAlign: "center" }}>
+              Your profile name ({user?.name}) is used if this is blank.
+            </Text>
+            <Pressable
+              accessibilityRole="button"
+              onPress={saveUsername}
+              disabled={savingUsername}
+              style={[common.button, { marginTop: 10, opacity: savingUsername ? 0.6 : 1 }]}
+            >
+              <Text style={common.buttonText}>
+                {savingUsername ? "Saving…" : "Save username"}
+              </Text>
+            </Pressable>
+            {!!usernameMessage && (
+              <Text style={{ color: colors.brandDark, fontSize: 13, marginTop: 8, textAlign: "center" }}>
+                {usernameMessage}
+              </Text>
+            )}
+            {!!usernameError && (
+              <Text accessibilityRole="alert" style={[common.error, { marginTop: 8 }]}>
+                {usernameError}
+              </Text>
+            )}
+          </View>
           <View
             style={{
               flexDirection: "row",

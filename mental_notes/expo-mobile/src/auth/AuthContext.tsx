@@ -13,6 +13,7 @@ export type Role = "user" | "moderator" | "admin";
 export type User = {
   id: string;
   name: string;
+  username?: string;
   email: string;
   emailVerified: boolean;
   role?: Role;
@@ -30,6 +31,7 @@ type AuthContextValue = {
     consent: true;
   }) => Promise<void>;
   staffLogin: (email: string, password: string) => Promise<void>;
+  updateUsername: (username: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -93,9 +95,24 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
     setUser(null);
   }, []);
 
+  const updateUsername = useCallback(async (username: string) => {
+    const response = await api.patch<{ user: User }>("/auth/username", {
+      username,
+    });
+    setUser(response.data.user);
+  }, []);
+
   const value = useMemo(
-    () => ({ user, loading, login, register, staffLogin, logout }),
-    [user, loading, login, register, staffLogin, logout],
+    () => ({
+      user,
+      loading,
+      login,
+      register,
+      staffLogin,
+      updateUsername,
+      logout,
+    }),
+    [user, loading, login, register, staffLogin, updateUsername, logout],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

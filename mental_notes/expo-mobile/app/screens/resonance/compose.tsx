@@ -5,6 +5,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  Switch,
   Text,
   TextInput,
   View,
@@ -22,12 +23,13 @@ const GUIDELINES = [
   "Be kind. Share your own experience, not advice about medication or diagnoses.",
   "No links, emails or phone numbers.",
   "Resonance is peer support. It is not therapy and not for emergencies.",
-  "You appear under a random name that is different on every post. Posts that several people report are hidden.",
+  "Choose whether your post uses a random name or your profile username. Posts that several people report are hidden.",
 ];
 
 export default function Compose() {
   const router = useRouter();
   const [text, setText] = useState("");
+  const [anonymous, setAnonymous] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<{
@@ -41,7 +43,7 @@ export default function Compose() {
     setBusy(true);
     setError("");
     try {
-      const res = await resonanceApi.create(trimmed);
+      const res = await resonanceApi.create(trimmed, anonymous);
       if (res.held || res.safety !== "none") {
         setResult({ held: !!res.held, safety: res.safety });
       } else {
@@ -104,6 +106,35 @@ export default function Compose() {
         <Text style={[common.label, { marginTop: 20 }]}>
           What is on your mind?
         </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: 14,
+            padding: 14,
+            backgroundColor: colors.paper,
+            borderRadius: 14,
+          }}
+        >
+          <View style={{ flex: 1, paddingRight: 12 }}>
+            <Text style={{ color: colors.ink, fontWeight: "600" }}>
+              Post anonymously
+            </Text>
+            <Text style={{ color: colors.muted, marginTop: 3 }}>
+              {anonymous
+                ? "Your post will use a random name."
+                : "Your profile username or name will be shown."}
+            </Text>
+          </View>
+          <Switch
+            accessibilityLabel="Post anonymously"
+            value={anonymous}
+            onValueChange={setAnonymous}
+            trackColor={{ false: colors.line, true: colors.brandSoft }}
+            thumbColor={anonymous ? colors.brand : colors.paper}
+          />
+        </View>
         <TextInput
           value={text}
           onChangeText={setText}
@@ -136,7 +167,9 @@ export default function Compose() {
           {busy ? (
             <ActivityIndicator color={colors.paper} />
           ) : (
-            <Text style={common.buttonText}>Share anonymously</Text>
+            <Text style={common.buttonText}>
+              {anonymous ? "Share anonymously" : "Share with my name"}
+            </Text>
           )}
         </Pressable>
       </ScrollView>

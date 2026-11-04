@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { z } from "zod";
 import ResonancePost from "../models/ResonancePost.js";
 import ResonanceComment from "../models/ResonanceComment.js";
+import User from "../models/User.js";
 import { requireAuth } from "../middleware/auth.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { assessRisk } from "../utils/safety.js";
@@ -22,6 +23,7 @@ const COMMENTS_PER_HOUR = 20;
 
 const postSchema = z.object({
   body: z.string().trim().min(1, "Write something first.").max(1000),
+  anonymous: z.boolean().default(true),
 });
 const commentSchema = z.object({
   body: z.string().trim().min(1, "Write something first.").max(500),
@@ -42,7 +44,10 @@ function shapePost(p, userId) {
   return {
     _id: p._id,
     body: p.body,
-    pseudonym: pseudonymFor(p.authorKey),
+    displayName:
+      p.anonymous === false && p.displayName
+        ? p.displayName
+        : pseudonymFor(p.authorKey),
     isMine: keyFor(userId, p._id) === p.authorKey,
     reactionCount: p.reactionCount,
     reacted: p.reactorKeys.includes(keyFor(userId, p._id, "react")),
@@ -103,7 +108,7 @@ router.post(
     const parsed = postSchema.safeParse(req.body);
     if (!parsed.success)
       return res.status(400).json({ message: parsed.error.issues[0].message });
-    const text = parsed.data.body;
+    const { body: text, anonymous } = parsed.data;
     const userId = uid(req);
 
     const s = screen(text);
@@ -114,9 +119,16 @@ router.post(
       });
 
     const _id = new mongoose.Types.ObjectId();
+    const author = anonymous
+      ? null
+      : await User.findById(userId).select("name username");
+    if (!anonymous && !author)
+      return res.status(401).json({ message: "Not authenticated" });
     const post = await ResonancePost.create({
       _id,
       authorKey: keyFor(userId, _id),
+      anonymous,
+      ...(author && { displayName: author.username || author.name }),
       body: text,
       status: s.status,
     });

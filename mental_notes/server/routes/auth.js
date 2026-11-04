@@ -64,6 +64,16 @@ const resetSchema = z.object({ token: tokenSchema, password: passwordSchema });
 const deleteSchema = z.object({
   password: z.string().min(1, "Enter your password"),
 });
+const usernameSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .max(24, "Username must be 24 characters or fewer")
+    .refine(
+      (value) => value === "" || /^[a-zA-Z0-9_]{3,24}$/.test(value),
+      "Use 3–24 letters, numbers, or underscores",
+    ),
+});
 
 // Used so a login for an unknown email takes about as long as a real one.
 const DUMMY_HASH = bcrypt.hashSync("not-a-real-password", 12);
@@ -99,6 +109,7 @@ function publicUser(u) {
   return {
     id: u._id,
     name: u.name,
+    username: u.username || "",
     email: u.email,
     emailVerified: !!u.emailVerified,
     role: u.role ?? "user",
@@ -334,6 +345,23 @@ router.get(
       return res.status(401).json({ message: "Not authenticated" });
     }
     res.json({ ...publicUser(user), staffSession: req.tokenScope === "staff" });
+  }),
+);
+
+router.patch(
+  "/username",
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const parsed = usernameSchema.safeParse(req.body);
+    if (!parsed.success)
+      return res.status(400).json({ message: parsed.error.issues[0].message });
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { username: parsed.data.username },
+      { new: true, runValidators: true },
+    );
+    if (!user) return res.status(401).json({ message: "Not authenticated" });
+    res.json({ user: publicUser(user) });
   }),
 );
 

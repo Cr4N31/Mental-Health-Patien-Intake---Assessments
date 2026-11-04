@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Alert,
   Pressable,
@@ -7,8 +8,10 @@ import {
   TextInput,
   View,
 } from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useRouter, usePathname } from "expo-router";
+import { useRouter, usePathname } from "expo-router";
+
 import { RequireAuth } from "../../src/components/RequireAuth";
 import { BackLink } from "../../src/components/BackLink";
 import { useAuth } from "../../src/auth/AuthContext";
@@ -19,25 +22,34 @@ import ReminderCard from "../../src/components/ReminderCard";
 function SettingsContent() {
   const pathname = usePathname();
   console.log("SETTINGS mounted at", pathname);
+
   const { user, logout } = useAuth();
   const router = useRouter();
+
   const [confirmResults, setConfirmResults] = useState(false);
   const [resultsBusy, setResultsBusy] = useState(false);
   const [resultsMsg, setResultsMsg] = useState("");
   const [resultsError, setResultsError] = useState("");
+
   const [showAccount, setShowAccount] = useState(false);
   const [password, setPassword] = useState("");
   const [accountBusy, setAccountBusy] = useState(false);
   const [accountError, setAccountError] = useState("");
+
   async function deleteResults() {
     setResultsError("");
     setResultsMsg("");
     setResultsBusy(true);
+
     try {
       const res = await api.delete<{ deleted: number }>("/assessments");
+
       setResultsMsg(
-        `Deleted ${res.data.deleted} ${res.data.deleted === 1 ? "result" : "results"}.`,
+        `Deleted ${res.data.deleted} ${
+          res.data.deleted === 1 ? "result" : "results"
+        }.`,
       );
+
       setConfirmResults(false);
     } catch (err) {
       setResultsError(errorMessage(err));
@@ -45,9 +57,11 @@ function SettingsContent() {
       setResultsBusy(false);
     }
   }
+
   async function deleteAccount() {
     setAccountError("");
     setAccountBusy(true);
+
     try {
       await api.delete("/auth/account", { data: { password } });
       await logout();
@@ -57,11 +71,13 @@ function SettingsContent() {
       setAccountBusy(false);
     }
   }
+
   function confirmDeleteAccount() {
     if (!password) {
       setAccountError("Enter your password to continue.");
       return;
     }
+
     Alert.alert(
       "Permanently delete account?",
       "Your account and all results will be permanently deleted.",
@@ -77,91 +93,144 @@ function SettingsContent() {
       ],
     );
   }
+
   return (
     <ScrollView
       style={common.screen}
       contentContainerStyle={{ padding: 22, paddingBottom: 48 }}
     >
       <BackLink href="/screens/home" />
+
       <Text style={[common.title, { marginTop: 23 }]}>Settings</Text>
+
       <View style={[common.card, { marginTop: 22 }]}>
         <Text
-          style={{ color: colors.brandDark, fontSize: 21, fontWeight: "700" }}
+          style={{
+            color: colors.brandDark,
+            fontSize: 21,
+            fontWeight: "700",
+          }}
         >
           Your account
         </Text>
+
         <Text style={{ color: colors.ink, fontSize: 16, marginTop: 14 }}>
           {user?.name}
         </Text>
+
         <Text style={{ color: colors.muted, marginTop: 4 }}>{user?.email}</Text>
+
         <Text style={{ color: colors.muted, fontSize: 14, marginTop: 8 }}>
           {user?.emailVerified ? "Email verified" : "Email not verified yet"}
         </Text>
-        <Link href="/screens/profile" style={[common.link, { marginTop: 15 }]}>
+
+        <Text
+          onPress={() => router.push("/screens/profile")}
+          style={[common.link, { marginTop: 15 }]}
+        >
           View profile
-        </Link>
+        </Text>
+
         <ReminderCard />
+
+        {/* Admin tools */}
         {(user?.role === "admin" || user?.role === "moderator") && (
-          <Link href="/screens/admin" asChild>
-            <Pressable
-              accessibilityRole="button"
-              style={({ pressed }) => ({
-                flexDirection: "row",
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Admin tools. Moderation and activity"
+            onPress={() => router.push("/screens/admin")}
+            style={({ pressed }) => ({
+              width: "100%",
+              minHeight: 72,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: 14,
+              paddingVertical: 14,
+              marginTop: 16,
+              gap: 13,
+              borderRadius: 14,
+              backgroundColor: pressed ? colors.brandSoft : colors.paper,
+              borderWidth: 1,
+              borderColor: colors.line,
+              opacity: pressed ? 0.85 : 1,
+            })}
+          >
+            {/* Icon */}
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                flexShrink: 0,
+                borderRadius: 15,
+                backgroundColor: colors.brandSoft,
                 alignItems: "center",
-                gap: 12,
-                marginTop: 16,
-                padding: 14,
-                borderRadius: 14,
-                backgroundColor: pressed ? colors.brandSoft : colors.paper,
-                borderWidth: 1,
-                borderColor: colors.line,
-                transform: [{ scale: pressed ? 0.99 : 1 }],
-              })}
+                justifyContent: "center",
+              }}
             >
-              <View
+              <Ionicons
+                name="shield-checkmark-outline"
+                size={23}
+                color={colors.brandDark}
+              />
+            </View>
+
+            {/* Text */}
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                gap: 4,
+              }}
+            >
+              <Text
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 13,
-                  backgroundColor: colors.brandSoft,
-                  alignItems: "center",
-                  justifyContent: "center",
+                  color: colors.ink,
+                  fontSize: 15,
+                  fontWeight: "700",
                 }}
               >
-                <Ionicons
-                  name="shield-checkmark-outline"
-                  size={20}
-                  color={colors.brandDark}
-                />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={{ color: colors.ink, fontWeight: "700" }}>
-                  Admin tools
-                </Text>
-                <Text style={{ color: colors.muted, fontSize: 13, marginTop: 3 }}>
-                  Moderation and activity
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.muted} />
-            </Pressable>
-          </Link>
+                Admin tools
+              </Text>
+
+              <Text
+                style={{
+                  color: colors.muted,
+                  fontSize: 13,
+                }}
+              >
+                Moderation and activity
+              </Text>
+            </View>
+
+            {/* Chevron */}
+            <Ionicons name="chevron-forward" size={20} color={colors.muted} />
+          </Pressable>
         )}
       </View>
+
+      {/* Delete results */}
       <View style={common.card}>
         <Text
-          style={{ color: colors.brandDark, fontSize: 21, fontWeight: "700" }}
+          style={{
+            color: colors.brandDark,
+            fontSize: 21,
+            fontWeight: "700",
+          }}
         >
           Delete my results
         </Text>
+
         <Text style={[common.subtitle, { fontSize: 15 }]}>
           Permanently deletes every PHQ-9 and GAD-7 result saved to your
           account. Your account stays open. This cannot be undone.
         </Text>
+
         {!!resultsMsg && (
           <Text style={{ color: colors.brand, marginTop: 13 }}>
             {resultsMsg}
           </Text>
         )}
+
         {!!resultsError && (
           <Text
             accessibilityRole="alert"
@@ -170,6 +239,7 @@ function SettingsContent() {
             {resultsError}
           </Text>
         )}
+
         {!confirmResults ? (
           <Pressable
             onPress={() => setConfirmResults(true)}
@@ -191,6 +261,7 @@ function SettingsContent() {
             <Text style={{ color: colors.ink, fontWeight: "600" }}>
               Delete all results?
             </Text>
+
             <View style={{ flexDirection: "row", gap: 12, marginTop: 12 }}>
               <Pressable
                 disabled={resultsBusy}
@@ -204,6 +275,7 @@ function SettingsContent() {
                   {resultsBusy ? "Deleting…" : "Yes, delete"}
                 </Text>
               </Pressable>
+
               <Pressable
                 disabled={resultsBusy}
                 onPress={() => setConfirmResults(false)}
@@ -221,14 +293,24 @@ function SettingsContent() {
           </View>
         )}
       </View>
+
+      {/* Delete account */}
       <View style={[common.card, { borderColor: colors.risk }]}>
-        <Text style={{ color: colors.risk, fontSize: 21, fontWeight: "700" }}>
+        <Text
+          style={{
+            color: colors.risk,
+            fontSize: 21,
+            fontWeight: "700",
+          }}
+        >
           Delete my account
         </Text>
+
         <Text style={common.subtitle}>
           Permanently deletes your account and all of your results. This cannot
           be undone.
         </Text>
+
         {!showAccount ? (
           <Pressable
             onPress={() => setShowAccount(true)}
@@ -248,6 +330,7 @@ function SettingsContent() {
         ) : (
           <View style={{ marginTop: 17, gap: 11 }}>
             <Text style={common.label}>Enter your password to confirm</Text>
+
             <TextInput
               accessibilityLabel="Password confirmation"
               secureTextEntry
@@ -257,11 +340,13 @@ function SettingsContent() {
               onChangeText={setPassword}
               style={common.input}
             />
+
             {!!accountError && (
               <Text accessibilityRole="alert" style={common.error}>
                 {accountError}
               </Text>
             )}
+
             <View
               style={{
                 flexDirection: "row",
@@ -279,6 +364,7 @@ function SettingsContent() {
                   {accountBusy ? "Deleting…" : "Permanently delete account"}
                 </Text>
               </Pressable>
+
               <Pressable
                 disabled={accountBusy}
                 onPress={() => {
