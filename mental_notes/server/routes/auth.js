@@ -247,6 +247,7 @@ router.post(
     }
     await LoginEvent.create({});
     res.json({ token: createAuthToken(user._id), user: publicUser(user) });
+    await User.updateOne({ _id: user._id }, { lastLoginAt: new Date() });
   }),
 );
 
@@ -306,6 +307,7 @@ router.post(
       token: createAuthToken(user._id, { staff: true }),
       user: { ...publicUser(user), staffSession: true },
     });
+    await User.updateOne({ _id: user._id }, { lastLoginAt: new Date() });
   }),
 );
 
@@ -331,6 +333,7 @@ router.post(
     await LoginEvent.create({});
     setAuthCookie(res, user._id);
     res.json(publicUser(user));
+    await User.updateOne({ _id: user._id }, { lastLoginAt: new Date() });
   }),
 );
 

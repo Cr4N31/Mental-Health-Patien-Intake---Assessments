@@ -1,4 +1,5 @@
 import api from "./client";
+import type { Role } from "../auth/AuthContext";
 
 export type QueueItem = {
   _id: string;
@@ -53,11 +54,22 @@ export type ConsultRow = {
 export type AuditRow = {
   _id: string;
   admin: string;
-  action: "approve" | "delete";
-  targetType: "post" | "comment";
+  action: "approve" | "delete" | "role_change";
+  targetType: "post" | "comment" | "user";
+  note?: string;
   createdAt: string;
 };
 export type Kind = "post" | "comment";
+
+export type Person = {
+  _id: string;
+  name: string;
+  email: string;
+  role: Role;
+  emailVerified: boolean;
+  createdAt: string;
+  lastLoginAt: string | null;
+};
 
 export const adminApi = {
   queue: () => api.get<Queue>("/admin/queue").then((r) => r.data),
@@ -69,7 +81,17 @@ export const adminApi = {
   consults: () => api.get<ConsultRow[]>("/admin/consults").then((r) => r.data),
   audit: () => api.get<AuditRow[]>("/admin/audit").then((r) => r.data),
   analytics: (range: AnalyticsRange) =>
-    api.get<Analytics>("/admin/analytics", { params: { range } }).then((r) => r.data),
-  users: () =>
-    api.get<RegisteredAccount[]>("/admin/users").then((r) => r.data),
+    api
+      .get<Analytics>("/admin/analytics", { params: { range } })
+      .then((r) => r.data),
+  users: () => api.get<RegisteredAccount[]>("/admin/users").then((r) => r.data),
+
+  people: (q: string) =>
+    api
+      .get<Person[]>("/admin/users", { params: q ? { q } : undefined })
+      .then((r) => r.data),
+  setRole: (id: string, role: Role, password: string) =>
+    api
+      .patch(`/admin/users/${id}/role`, { role, password })
+      .then((r) => r.data),
 };

@@ -11,15 +11,17 @@ const adminActionSchema = new mongoose.Schema(
     },
     action: {
       type: String,
-      enum: ["approve", "delete"],
+      enum: ["approve", "delete", "role_change"],
       required: true,
     },
     targetType: {
       type: String,
-      enum: ["post", "comment"],
+      enum: ["post", "comment", "user"],
       required: true,
     },
     targetId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    // For role changes, for example "user to moderator". No names stored.
+    note: { type: String, maxlength: 60, default: "" },
   },
   { timestamps: true },
 );

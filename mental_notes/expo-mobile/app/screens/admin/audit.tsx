@@ -63,8 +63,9 @@ function AuditContent() {
       {rows?.map((r) => (
         <View key={r._id} style={common.card}>
           <Text style={{ color: colors.ink }}>
-            {r.admin} {r.action === "approve" ? "approved" : "deleted"} a{" "}
-            {r.targetType}
+            {r.action === "role_change"
+              ? `${r.admin} changed a user's role (${r.note ?? ""})`
+              : `${r.admin} ${r.action === "approve" ? "approved" : "deleted"} a ${r.targetType}`}
           </Text>
           <Text style={{ color: colors.muted, fontSize: 13, marginTop: 4 }}>
             {formatDate(r.createdAt)}

@@ -1,9 +1,11 @@
 import { Router } from "express";
+import { z } from "zod";
+import bcrypt from "bcryptjs";
+import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";
 import ResonancePost from "../models/ResonancePost.js";
 import ResonanceComment from "../models/ResonanceComment.js";
 import ConsultRequest from "../models/ConsultRequest.js";
-import Professional from "../models/Professional.js"; // registers the model for populate
 import AdminAction from "../models/AdminAction.js";
 import User from "../models/User.js";
 import LoginEvent from "../models/LoginEvent.js";
@@ -181,7 +183,9 @@ router.get(
   asyncHandler(async (req, res) => {
     const range = ANALYTICS_RANGES[req.query.range];
     if (!range)
-      return res.status(400).json({ message: "Choose a valid analytics range" });
+      return res
+        .status(400)
+        .json({ message: "Choose a valid analytics range" });
 
     const now = new Date();
     let start;
@@ -192,8 +196,11 @@ router.get(
         Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - range.count + 1),
       );
     } else {
-      const duration = range.binSize * (range.unit === "minute" ? 60_000 : 3_600_000);
-      end = new Date(Math.floor(now.getTime() / duration) * duration + duration);
+      const duration =
+        range.binSize * (range.unit === "minute" ? 60_000 : 3_600_000);
+      end = new Date(
+        Math.floor(now.getTime() / duration) * duration + duration,
+      );
       start = new Date(end.getTime() - range.count * duration);
       if (range.unit === "day") {
         end.setUTCHours(0, 0, 0, 0);
@@ -215,7 +222,9 @@ router.get(
     const grouped = (Model, extraGroup = {}) =>
       Model.aggregate([
         { $match: match },
-        { $group: { _id: { date: bucket, ...extraGroup }, count: { $sum: 1 } } },
+        {
+          $group: { _id: { date: bucket, ...extraGroup }, count: { $sum: 1 } },
+        },
       ]);
 
     const [signups, logins, activity, consults] = await Promise.all([
@@ -229,8 +238,13 @@ router.get(
       const date = new Date(start);
       if (range.unit === "month") date.setUTCMonth(date.getUTCMonth() + index);
       else if (range.unit === "day") date.setUTCDate(date.getUTCDate() + index);
-      else date.setTime(date.getTime() + index * range.binSize *
-        (range.unit === "minute" ? 60_000 : 3_600_000));
+      else
+        date.setTime(
+          date.getTime() +
+            index *
+              range.binSize *
+              (range.unit === "minute" ? 60_000 : 3_600_000),
+        );
       return {
         date: date.toISOString(),
         signups: 0,
@@ -268,19 +282,6 @@ router.get(
     }
 
     res.json({ range: req.query.range, buckets });
-  }),
-);
-
-router.get(
-  "/users",
-  adminOnly,
-  asyncHandler(async (req, res) => {
-    const users = await User.find()
-      .select("name email role createdAt")
-      .sort({ createdAt: -1 })
-      .limit(50)
-      .lean();
-    res.json(users);
   }),
 );
 
@@ -322,9 +323,102 @@ router.get(
         admin: r.admin?.name ?? "Unknown",
         action: r.action,
         targetType: r.targetType,
+        note: r.note,
         createdAt: r.createdAt,
       })),
     );
+  }),
+);
+
+// ---- Accounts and roles (admin only) ----
+
+const roleLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const roleSchema = z.object({
+  role: z.enum(["user", "moderator", "admin"]),
+  password: z.string().min(1, "Enter your password"),
+});
+
+router.get(
+  "/users",
+  adminOnly,
+  asyncHandler(async (req, res) => {
+    const q = String(req.query.q || "")
+      .trim()
+      .slice(0, 60);
+    const filter = {};
+    if (q) {
+      const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+      filter.$or = [{ name: rx }, { email: rx }];
+    }
+    const users = await User.find(filter)
+      .select("name email role emailVerified createdAt lastLoginAt")
+      .sort({ createdAt: -1 })
+      .limit(30)
+      .lean();
+    res.json(
+      users.map((u) => ({
+        _id: u._id,
+        name: u.name,
+        email: u.email,
+        role: u.role ?? "user",
+        emailVerified: !!u.emailVerified,
+        createdAt: u.createdAt,
+        lastLoginAt: u.lastLoginAt ?? null,
+      })),
+    );
+  }),
+);
+
+router.patch(
+  "/users/:id/role",
+  adminOnly,
+  roleLimiter,
+  validId,
+  asyncHandler(async (req, res) => {
+    const parsed = roleSchema.safeParse(req.body);
+    if (!parsed.success)
+      return res.status(400).json({ message: parsed.error.issues[0].message });
+    const { role, password } = parsed.data;
+
+    if (String(req.params.id) === String(req.userId))
+      return res
+        .status(400)
+        .json({ message: "You cannot change your own role." });
+
+    // Re-check the admin's password before changing anyone's access.
+    const me = await User.findById(req.userId).select("+passwordHash");
+    if (!me || !(await bcrypt.compare(password, me.passwordHash)))
+      return res.status(403).json({ message: "Incorrect password" });
+
+    const target = await User.findById(req.params.id).select(
+      "role emailVerified",
+    );
+    if (!target) return res.status(404).json({ message: "Account not found" });
+
+    const from = target.role ?? "user";
+    if (from === role)
+      return res.status(400).json({ message: "They already have that role." });
+    if (role !== "user" && !target.emailVerified)
+      return res.status(400).json({
+        message:
+          "Only accounts with a verified email can be given a staff role.",
+      });
+
+    await User.updateOne({ _id: target._id }, { role });
+    await AdminAction.create({
+      admin: req.userId,
+      action: "role_change",
+      targetType: "user",
+      targetId: target._id,
+      note: `${from} to ${role}`,
+    });
+    res.json({ ok: true });
   }),
 );
 

@@ -232,9 +232,22 @@ function AdminContent() {
           </View>
 
           <View style={common.card}>
+            <Title>Accounts and roles</Title>
+            <Text style={[common.subtitle, { fontSize: 15 }]}>
+              See registered accounts and give staff roles.
+            </Text>
+            <Link
+              href={"/screens/admin/people" as never}
+              style={[common.link, { marginTop: 10 }]}
+            >
+              Manage accounts
+            </Link>
+          </View>
+
+          <View style={common.card}>
             <Title>Registered accounts</Title>
             <Text style={[common.subtitle, { fontSize: 14 }]}>
-              {stats.users.total} accounts total · showing the latest 50
+              {stats.users.total} accounts total · showing the latest 30
             </Text>
             {!!accounts &&
               accounts.map((account) => (

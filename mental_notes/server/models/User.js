@@ -3,7 +3,13 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true, maxlength: 100 },
-    username: { type: String, trim: true, lowercase: true, maxlength: 24, default: "" },
+    username: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      maxlength: 24,
+      default: "",
+    },
     email: {
       type: String,
       required: true,
@@ -35,6 +41,7 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "moderator", "admin"],
       default: "user",
     },
+    lastLoginAt: { type: Date },
   },
   { timestamps: true },
 );

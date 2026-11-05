@@ -7,7 +7,7 @@
     "platforms": ["ios", "android", "web"],
     "icon": "./assets/Logo PranatiX_iconX_whitebackground.png",
     "android": {
-      "package": "com.cran3.mentalnotes",
+      "package": "com.cran3.pranatix",
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo_x.png",
         "backgroundImage": "./assets/logo_x.png",
@@ -16,7 +16,7 @@
       }
     },
     "ios": {
-      "bundleIdentifier": "com.cran3.mentalnotes"
+      "bundleIdentifier": "com.cran3.pranatix"
     },
     "orientation": "portrait",
     "userInterfaceStyle": "light",
