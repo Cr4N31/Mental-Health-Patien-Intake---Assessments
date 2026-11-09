@@ -396,20 +396,12 @@ router.patch(
     if (!me || !(await bcrypt.compare(password, me.passwordHash)))
       return res.status(403).json({ message: "Incorrect password" });
 
-    const target = await User.findById(req.params.id).select(
-      "role emailVerified",
-    );
+    const target = await User.findById(req.params.id).select("role");
     if (!target) return res.status(404).json({ message: "Account not found" });
 
     const from = target.role ?? "user";
     if (from === role)
       return res.status(400).json({ message: "They already have that role." });
-    if (role !== "user" && !target.emailVerified)
-      return res.status(400).json({
-        message:
-          "Only accounts with a verified email can be given a staff role.",
-      });
-
     await User.updateOne({ _id: target._id }, { role });
     await AdminAction.create({
       admin: req.userId,
