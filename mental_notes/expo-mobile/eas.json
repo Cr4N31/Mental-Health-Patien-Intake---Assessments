@@ -9,10 +9,19 @@
       "environment": "preview",
       "android": {
         "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://mental-health-patien-intake-assessments.onrender.com/api"
       }
     },
     "production": {
       "environment": "production",
+      "ios": {
+        "simulator": false
+      },
       "autoIncrement": true
     }
   }

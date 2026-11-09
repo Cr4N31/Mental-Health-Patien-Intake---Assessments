@@ -17,7 +17,13 @@ export default function Register() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  if (!loading && user) return <Navigate to="/" replace />;
+  if (!loading && user?.role === "user") {
+    return <Navigate to="/pending" replace />;
+  }
+  if (!loading && user?.staffSession) {
+    return <Navigate to="/admin" replace />;
+  }
+  if (!loading && user) return <Navigate to="/login" replace />;
 
   const setField = (name) => (e) =>
     setForm((f) => ({ ...f, [name]: e.target.value }));
@@ -42,12 +48,12 @@ export default function Register() {
     setBusy(true);
     try {
       await register({
-        name: form.name,
-        email: form.email,
+        name: form.name.trim(),
+        email: form.email.trim(),
         password: form.password,
         consent: true,
       });
-      navigate("/", { replace: true });
+      navigate("/pending", { replace: true });
     } catch (err) {
       setError(errorMessage(err));
     } finally {
