@@ -81,7 +81,6 @@ function PersonRows({ person, isSelf, onDone }) {
                 <legend className="mb-2 text-sm font-medium">Choose a role</legend>
                 <div className="flex flex-wrap gap-2">
                   {["user", "moderator", "admin"].map((item) => {
-                    const blocked = item !== "user" && !person.emailVerified;
                     return (
                       <label
                         key={item}
@@ -97,7 +96,6 @@ function PersonRows({ person, isSelf, onDone }) {
                           name={`role-${person._id}`}
                           value={item}
                           checked={role === item}
-                          disabled={blocked}
                           onChange={() => setRole(item)}
                         />
                         {item}
@@ -106,11 +104,6 @@ function PersonRows({ person, isSelf, onDone }) {
                   })}
                 </div>
               </fieldset>
-              {!person.emailVerified && (
-                <p className="text-sm text-muted">
-                  Staff roles need a verified email. Ask them to verify first.
-                </p>
-              )}
               <div className="max-w-sm">
                 <label htmlFor={`password-${person._id}`} className="mb-1 block text-sm font-medium">
                   Your password, to confirm

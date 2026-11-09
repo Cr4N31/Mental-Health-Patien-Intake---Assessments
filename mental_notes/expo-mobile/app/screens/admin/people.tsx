@@ -76,18 +76,15 @@ function PersonCard({
         <View style={{ marginTop: 14, gap: 10 }}>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
             {ROLES.map((r) => {
-              const blocked = r !== "user" && !p.emailVerified;
               const active = r === role;
               return (
                 <Pressable
                   key={r}
-                  disabled={blocked}
                   onPress={() => setRole(r)}
                   style={{
                     borderWidth: 1,
                     borderColor: active ? colors.brand : colors.line,
                     backgroundColor: active ? colors.brandSoft : colors.paper,
-                    opacity: blocked ? 0.4 : 1,
                     borderRadius: 999,
                     paddingVertical: 8,
                     paddingHorizontal: 14,
@@ -102,11 +99,6 @@ function PersonCard({
               );
             })}
           </View>
-          {!p.emailVerified && (
-            <Text style={{ color: colors.muted, fontSize: 13 }}>
-              Staff roles need a verified email. Ask them to verify first.
-            </Text>
-          )}
           <Text style={common.label}>Your password, to confirm</Text>
           <TextInput
             accessibilityLabel="Your password"
