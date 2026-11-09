@@ -1,23 +1,37 @@
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import Landing from "./pages/client/Landing.jsx";
 import Login from "./pages/auth/Login.jsx";
 import Register from "./pages/auth/RegisterPage.jsx";
-import Dashboard from "./pages/client/Dashboard.jsx";
-import TakeAssessment from "./pages/client/TakeAssessment.jsx";
-import Result from "./pages/client/Result.jsx";
-import History from "./pages/client/History.jsx";
-import Settings from "./pages/client/Settings.jsx";
 import ForgotPassword from "./pages/auth/ForgetPassword.jsx";
 import ResetPassword from "./pages/auth/ResetPassword.jsx";
 import VerifyEmail from "./components/VerifyEmail.jsx";
+import PendingAccess from "./pages/auth/PendingAccess.jsx";
+import AdminLayout from "./components/AdminLayout.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import QueuePage from "./pages/admin/QueuePage.jsx";
+import PeoplePage from "./pages/admin/PeoplePage.jsx";
+import ConsultsPage from "./pages/admin/ConsultsPage.jsx";
+import AuditPage from "./pages/admin/AuditPage.jsx";
 
-// "/" shows the landing page to visitors and the dashboard to logged-in users.
 function Home() {
-  const { user, loading } = useAuth();
+  const { user, loading, authError } = useAuth();
   if (loading) return <p className="p-8 text-muted">Loading...</p>;
-  return user ? <Dashboard /> : <Landing />;
+  if (authError) {
+    return <p role="alert" className="p-8 text-risk">{authError}</p>;
+  }
+  if (!user) return <Login />;
+  if (user.role === "user") return <Navigate to="/pending" replace />;
+  if (user.staffSession) return <Navigate to="/admin" replace />;
+  return <Navigate to="/login" replace />;
+}
+
+function AdminRoute({ children, adminOnly = false }) {
+  return (
+    <ProtectedRoute adminOnly={adminOnly}>
+      {children}
+    </ProtectedRoute>
+  );
 }
 
 export default function App() {
@@ -27,41 +41,46 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/pending" element={<PendingAccess />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route
-          path="/assess/:type"
+          path="/admin"
           element={
-            <ProtectedRoute>
-              <TakeAssessment />
-            </ProtectedRoute>
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
           }
-        />
-        <Route
-          path="/results/:id"
-          element={
-            <ProtectedRoute>
-              <Result />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/history"
-          element={
-            <ProtectedRoute>
-              <History />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="queue" element={<QueuePage />} />
+          <Route
+            path="people"
+            element={
+              <AdminRoute adminOnly>
+                <PeoplePage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="consults"
+            element={
+              <AdminRoute adminOnly>
+                <ConsultsPage />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="audit"
+            element={
+              <AdminRoute adminOnly>
+                <AuditPage />
+              </AdminRoute>
+            }
+          />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AuthProvider>
   );

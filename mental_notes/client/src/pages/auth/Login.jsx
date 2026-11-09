@@ -11,15 +11,23 @@ export default function Login() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  if (!loading && user) return <Navigate to="/" replace />;
+  if (!loading && user?.role === "user") {
+    return <Navigate to="/pending" replace />;
+  }
+  if (!loading && user?.staffSession) {
+    return <Navigate to="/admin" replace />;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setBusy(true);
     try {
-      await login(email, password);
-      navigate("/", { replace: true });
+      const signedInUser = await login(email.trim(), password);
+      navigate(
+        signedInUser.role === "user" ? "/pending" : "/admin",
+        { replace: true },
+      );
     } catch (err) {
       setError(errorMessage(err));
     } finally {
