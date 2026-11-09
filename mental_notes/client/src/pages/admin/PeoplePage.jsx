@@ -88,7 +88,7 @@ function PersonRows({ person, isSelf, onDone }) {
                           role === item
                             ? "border-brand bg-brand/10 text-brand-dark"
                             : "border-line bg-paper"
-                        } ${blocked ? "cursor-not-allowed opacity-40" : ""}`}
+                        }`}
                       >
                         <input
                           className="sr-only"
